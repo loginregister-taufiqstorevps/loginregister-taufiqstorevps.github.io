@@ -2,39 +2,46 @@
 <html>
 <head>
   <title>Register - TaufiqStore</title>
-</head>
-<body>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f2f2f2;
+    }
 
-<h2>Register</h2>
+    h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
 
-<input id="email" placeholder="Email (@gmail.com)">
-<br>
-<input id="phone" placeholder="No HP">
-<br>
-<input id="password" type="password" placeholder="Password">
-<br><br>
+    input {
+      width: 300px;
+      height: 50px;
+      font-size: 20px;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
 
-<button onclick="register()">Daftar</button>
+    button {
+      width: 320px;
+      height: 60px;
+      font-size: 24px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
 
-<script>
-function register() {
-  const email = document.getElementById("email").value.trim().toLowerCase();
-  const phone = document.getElementById("phone").value.trim();
-  const password = document.getElementById("password").value;
-
-  // FILTER EMAIL
-  const emailRegex = /^[a-z0-9._%+-]+@gmail\.com$/;
-  if (!emailRegex.test(email)) {
-    alert("Email tidak valid! Harus @gmail.com");
-    return;
-  }
-
-  if (password.length < 6) {
-    alert("Password minimal 6 karakter");
-    return;
-  }
-
-  // SIMPAN DATA USER DI LOCALSTORAGE
+    button:hover {
+      background-color: #  // SIMPAN DATA USER DI LOCALSTORAGE
   localStorage.setItem("user", JSON.stringify({
     email,
     phone,
