@@ -1,5 +1,88 @@
-<input id="email" placeholder="Email" style="width:90%; font-size:18px; padding:10px; margin:5px 0;">
-<br>
-<input id="password" type="password" placeholder="Password" style="width:90%; font-size:18px; padding:10px; margin:5px 0;">
-<br><br>
-<button onclick="login()" style="width:95%; font-size:20px; padding:12px; background-color:#2196F3; color:white; border:none; border-radius:8px;">Login</button>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - TaufiqStore</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #8000FF; /* ungu */
+      color: white;
+    }
+
+    h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 300px;
+      height: 50px;
+      font-size: 20px;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      width: 320px;
+      height: 60px;
+      font-size: 24px;
+      background-color: #2196F3; /* biru */
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #1976D2;
+    }
+
+    a {
+      margin-top: 15px;
+      font-size: 18px;
+      text-decoration: none;
+      color: #FFD700; /* kuning kontras */
+    }
+  </style>
+</head>
+<body>
+
+<h2>Login</h2>
+
+<input id="email" placeholder="Email (@gmail.com)">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+<a href="register.html">Belum punya akun? Daftar</a>
+
+<script>
+function login() {
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const password = document.getElementById("password").value;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    alert("Belum ada akun, silakan daftar dulu");
+    return;
+  }
+
+  if (email === user.email && password === user.password) {
+    localStorage.setItem("login", "true");
+    location.href = "https://taufiqstorevps-shop.github.io"; // ganti ini ke dashboard top up lu
+  } else {
+    alert("Email atau password salah");
+  }
+}
+</script>
+
+</body>
+  </html>
