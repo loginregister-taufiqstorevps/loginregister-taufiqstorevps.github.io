@@ -10,7 +10,8 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background-color: #f2f2f2;
+      background-color: #8000FF; /* ungu */
+      color: white;
     }
 
     h2 {
@@ -25,14 +26,14 @@
       padding: 10px;
       margin: 10px 0;
       border-radius: 10px;
-      border: 1px solid #ccc;
+      border: none;
     }
 
     button {
       width: 320px;
       height: 60px;
       font-size: 24px;
-      background-color: #4CAF50;
+      background-color: #2196F3; /* biru */
       color: white;
       border: none;
       border-radius: 12px;
@@ -41,20 +42,54 @@
     }
 
     button:hover {
-      background-color: #  // SIMPAN DATA USER DI LOCALSTORAGE
-  localStorage.setItem("user", JSON.stringify({
-    email,
-    phone,
-    password
-  }));
+      background-color: #1976D2;
+    }
 
-  // AUTO LOGIN
+    a {
+      margin-top: 15px;
+      font-size: 18px;
+      text-decoration: none;
+      color: #FFD700; /* kuning kontras */
+    }
+  </style>
+</head>
+<body>
+
+<h2>Register</h2>
+
+<input id="email" placeholder="Email (@gmail.com)">
+<input id="phone" placeholder="No HP">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="register()">Register Sekarang</button>
+<a href="index.html">Sudah punya akun? Login</a>
+
+<script>
+function register() {
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const phone = document.getElementById("phone").value.trim();
+  const password = document.getElementById("password").value;
+
+  // filter email @gmail.com
+  const emailRegex = /^[a-z0-9._%+-]+@gmail\.com$/;
+  if (!emailRegex.test(email)) {
+    alert("Email tidak valid! Harus @gmail.com");
+    return;
+  }
+
+  if (password.length < 6) {
+    alert("Password minimal 6 karakter");
+    return;
+  }
+
+  // simpan data user
+  localStorage.setItem("user", JSON.stringify({ email, phone, password }));
   localStorage.setItem("login", "true");
 
-  // LANGSUNG KE DASHBOARD LU
-  location.href = "https://taufiqstorevps-shop.github.io";
+  // redirect ke dashboard top up (repo GitHub lain)
+  location.href = "https://taufiqstorevps-shop.github.io"; // ganti ini ke link dashboard top up lu
 }
 </script>
 
 </body>
-  </html>
+</html>
