@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register - TaufiqStore</title>
+</head>
+<body>
+
+<h2>Register</h2>
+
+<input id="email" placeholder="Email (@gmail.com)">
+<br>
+<input id="phone" placeholder="No HP">
+<br>
+<input id="password" type="password" placeholder="Password">
+<br><br>
+
+<button onclick="register()">Daftar</button>
+
+<script>
+function register() {
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const phone = document.getElementById("phone").value.trim();
+  const password = document.getElementById("password").value;
+
+  // FILTER EMAIL
+  const emailRegex = /^[a-z0-9._%+-]+@gmail\.com$/;
+  if (!emailRegex.test(email)) {
+    alert("Email tidak valid! Harus @gmail.com");
+    return;
+  }
+
+  if (password.length < 6) {
+    alert("Password minimal 6 karakter");
+    return;
+  }
+
+  // SIMPAN DATA USER DI LOCALSTORAGE
+  localStorage.setItem("user", JSON.stringify({
+    email,
+    phone,
+    password
+  }));
+
+  // AUTO LOGIN
+  localStorage.setItem("login", "true");
+
+  // LANGSUNG KE DASHBOARD LU
+  location.href = "https://taufiqstorevps-shop.github.io";
+}
+</script>
+
+</body>
+  </html>
