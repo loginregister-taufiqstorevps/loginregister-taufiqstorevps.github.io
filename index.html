@@ -1,88 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Login - TaufiqStore</title>
+  <meta charset="UTF-8">
+  <title>KLITIK CRAFT - Login</title>
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
+      background: #ffffff;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
       height: 100vh;
-      background-color: #8000FF; /* ungu */
-      color: white;
     }
 
-    h2 {
-      font-size: 32px;
-      margin-bottom: 20px;
+    .title {
+      margin-top: 40px;
+      font-size: 36px;
+      font-weight: bold;
+      color: #ff0000;
+      text-shadow: 0 0 10px #ff0000, 0 0 20px #ff4d4d;
+    }
+
+    .login-box {
+      border: 2px solid #ff0000;
+      box-shadow: 0 0 15px #ff0000;
+      padding: 25px;
+      width: 300px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .login-box p {
+      margin-bottom: 15px;
+      font-weight: bold;
     }
 
     input {
-      width: 300px;
-      height: 50px;
-      font-size: 20px;
+      width: 100%;
       padding: 10px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: none;
+      margin: 8px 0;
+      border: 1px solid #ff0000;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    input:focus {
+      box-shadow: 0 0 8px #ff0000;
     }
 
     button {
-      width: 320px;
-      height: 60px;
-      font-size: 24px;
-      background-color: #2196F3; /* biru */
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      background: #ff0000;
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 6px;
+      font-weight: bold;
       cursor: pointer;
-      margin-top: 20px;
+      box-shadow: 0 0 10px #ff0000;
     }
 
     button:hover {
-      background-color: #1976D2;
+      background: #e60000;
     }
 
-    a {
-      margin-top: 15px;
-      font-size: 18px;
-      text-decoration: none;
-      color: #FFD700; /* kuning kontras */
+    footer {
+      margin-bottom: 15px;
+      font-size: 12px;
+      color: #555;
     }
   </style>
 </head>
 <body>
 
-<h2>Login</h2>
+  <div class="title">KLITIK CRAFT</div>
 
-<input id="email" placeholder="Email (@gmail.com)">
-<input id="password" type="password" placeholder="Password">
+  <div class="login-box">
+    <p>Mau ke dashboard? Login dulu yak</p>
+    <form onsubmit="login(event)">
+      <input type="text" placeholder="Nama Minecraft" required>
+      <input type="number" placeholder="Umur (sesuaikan umur mu yak)" required>
+      <input type="email" placeholder="Email" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
 
-<button onclick="login()">Login</button>
-<a href="register.html">Belum punya akun? Daftar</a>
+  <footer>
+    © 2026 KLITIK CRAFT hak cipta dilindungi
+  </footer>
 
-<script>
-function login() {
-  const email = document.getElementById("email").value.trim().toLowerCase();
-  const password = document.getElementById("password").value;
-
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  if (!user) {
-    alert("Belum ada akun, silakan daftar dulu");
-    return;
-  }
-
-  if (email === user.email && password === user.password) {
-    localStorage.setItem("login", "true");
-    location.href = "https://taufiqstorevps-shop.github.io"; // ganti ini ke dashboard top up lu
-  } else {
-    alert("Email atau password salah");
-  }
-}
-</script>
+  <script>
+    function login(e) {
+      e.preventDefault();
+      window.location.href = "dashboard.html";
+    }
+  </script>
 
 </body>
-  </html>
+</html>
