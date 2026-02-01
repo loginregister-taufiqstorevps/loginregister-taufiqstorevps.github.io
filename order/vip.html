@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order VIP - KLITIK CRAFT</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+  color: #111;
+  padding: 20px;
+}
+
+h1 {
+  color: #ff0000;
+  text-align: center;
+  text-shadow: 0 0 5px #fff, 0 0 10px #ff0000;
+  margin-top: 20px;
+}
+
+form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 2px solid #ff0000;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ffcccc;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.radio-group {
+  margin-top: 5px;
+}
+
+.radio-group label {
+  display: block;
+  font-weight: normal;
+  margin-top: 5px;
+}
+
+button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e60000;
+}
+</style>
+</head>
+<body>
+
+<h1>Haii <span id="mcName">User</span>!</h1>
+<p style="text-align:center;">Kamu mau beli rank VIP ya! Langsung aja kirim data game:</p>
+
+<form id="orderForm">
+  <label>NamaMC:</label>
+  <input type="text" id="namaMC" placeholder="Masukkan nama Minecraft" required>
+
+  <label>Rank:</label>
+  <input type="text" id="rank" value="VIP" readonly>
+
+  <label>Metode Pembayaran:</label>
+  <div class="radio-group">
+    <label><input type="radio" name="metode" value="Dana" checked> Dana</label>
+    <label><input type="radio" name="metode" value="Ovo"> Ovo</label>
+    <label><input type="radio" name="metode" value="Gopay"> Gopay</label>
+    <label><input type="radio" name="metode" value="Bank BRI"> Bank BRI</label>
+    <label><input type="radio" name="metode" value="Bank Mandiri"> Bank Mandiri</label>
+    <label><input type="radio" name="metode" value="Qris"> Qris</label>
+  </div>
+
+  <button type="button" onclick="checkout()">Checkout</button>
+</form>
+
+<script>
+// Ambil nama Minecraft dari localStorage login
+const storedName = localStorage.getItem("mcName");
+if(storedName && storedName.trim() !== "") {
+  document.getElementById("mcName").innerText = storedName;
+  document.getElementById("namaMC").value = storedName;
+}
+
+// Fungsi Checkout
+function checkout() {
+  const nama = document.getElementById("namaMC").value;
+  const rank = document.getElementById("rank").value;
+  const metodeElems = document.getElementsByName("metode");
+  let metode = "";
+  for(let i=0;i<metodeElems.length;i++){
+    if(metodeElems[i].checked){ metode = metodeElems[i].value; break; }
+  }
+
+  if(!nama) {
+    alert("Masukkan NamaMC dulu!");
+    return;
+  }
+
+  // Nomor WA admin (ganti sesuai nomor admin)
+  const waNumber = "6283862091550";
+
+  // Pesan otomatis
+  const pesan = `Hallo admin tolong konfirmasi\n𝘿𝘼𝙏𝘼 𝙂𝘼𝙈𝙀𝙎\n𝐍𝐀𝐌𝐀 𝐌𝐂: ${nama}\n𝐑𝐚𝐧𝐤𝐬: ${rank}\n𝐌𝐞𝐭𝐨𝐝𝐞: ${metode}`;
+
+  // Encode pesan untuk URL WA
+  const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(pesan)}`;
+
+  // Buka WhatsApp
+  window.open(url, "_blank");
+}
+</script>
+
+</body>
+             </html>
