@@ -1,103 +1,104 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>KLITIK CRAFT - Login</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLITIK CRAFT - Login</title>
+<style>
+  body {
+    margin: 0;
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 
-    .title {
-      margin-top: 40px;
-      font-size: 36px;
-      font-weight: bold;
-      color: #ff0000;
-      text-shadow: 0 0 10px #ff0000, 0 0 20px #ff4d4d;
-    }
+  .login-box {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    text-align: center;
+    width: 90%;
+    max-width: 320px;
+  }
 
-    .login-box {
-      border: 2px solid #ff0000;
-      box-shadow: 0 0 15px #ff0000;
-      padding: 25px;
-      width: 300px;
-      border-radius: 10px;
-      text-align: center;
-    }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
 
-    .login-box p {
-      margin-bottom: 15px;
-      font-weight: bold;
-    }
+  .header img {
+    width: 40px; /* kecil di HP */
+    margin-right: 8px;
+  }
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ff0000;
-      border-radius: 6px;
-      outline: none;
-    }
+  .header h2 {
+    color: gold;
+    font-size: 18px;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff0;
+    margin: 0;
+  }
 
-    input:focus {
-      box-shadow: 0 0 8px #ff0000;
-    }
+  .login-box input {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
 
-    button {
-      margin-top: 10px;
-      width: 100%;
-      padding: 10px;
-      background: #ff0000;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 10px #ff0000;
-    }
+  .login-box button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px;
+    border: none;
+    background-color: #ff0000;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
-    button:hover {
-      background: #e60000;
-    }
-
-    footer {
-      margin-bottom: 15px;
-      font-size: 12px;
-      color: #555;
-    }
-  </style>
+  .login-box button:hover {
+    background-color: #e60000;
+  }
+</style>
 </head>
 <body>
-
-  <div class="title">KLITIK CRAFT</div>
-
   <div class="login-box">
-    <p>Mau ke dashboard? Login dulu yak</p>
-    <form onsubmit="login(event)">
-      <input type="text" placeholder="Nama Minecraft" required>
-      <input type="number" placeholder="Umur (sesuaikan umur mu yak)" required>
-      <input type="email" placeholder="Email" required>
+    <div class="header">
+      <img src="foto.jpg" alt="Server KLITIK CRAFT">
+      <h2>Mau beli? Login dulu</h2>
+    </div>
+
+    <form id="loginForm">
+      <input type="text" id="mcName" placeholder="Nama Minecraft" required><br>
+      <input type="number" id="umur" placeholder="Umur" required><br>
+      <input type="text" id="wa" placeholder="Nomer WA" required><br>
       <button type="submit">Login</button>
     </form>
   </div>
 
-  <footer>
-    © 2026 KLITIK CRAFT hak cipta dilindungi
-  </footer>
-
   <script>
-    function login(e) {
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      window.location.href = "dashboard.html";
-    }
-  </script>
+      const mcName = document.getElementById('mcName').value;
+      const umur = document.getElementById('umur').value;
+      const wa = document.getElementById('wa').value;
 
+      localStorage.setItem('mcName', mcName);
+      localStorage.setItem('umur', umur);
+      localStorage.setItem('wa', wa);
+
+      window.location.href = "dashboard.html";
+    });
+  </script>
 </body>
 </html>
