@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice - KLITIK CRAFT</title>
+
+<link rel="icon" type="image/jpeg" href="foto.jpg?v=1">
+
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#fff;color:#111}
+:root{--gold:#d4af37}
+
+/* MENU */
+.menu-btn{
+  position:fixed;top:15px;left:15px;
+  font-size:22px;background:var(--gold);
+  color:#fff;border:none;border-radius:8px;
+  padding:6px 10px;z-index:1001;
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;top:0;left:-260px;
+  width:260px;height:100%;
+  background:#fff;
+  box-shadow:2px 0 10px rgba(0,0,0,.15);
+  transition:.3s;z-index:1000;
+  display:flex;flex-direction:column;
+}
+.sidebar.active{left:0}
+.sidebar img{width:100%;height:120px;object-fit:cover}
+.sidebar a{
+  padding:14px;text-decoration:none;color:#111;
+  border-bottom:1px solid #eee;
+}
+.back-btn{
+  margin:15px;margin-top:auto;
+  padding:10px;background:var(--gold);
+  color:#fff;border:none;border-radius:10px;
+  font-weight:bold;
+}
+
+/* MAIN */
+.main{padding:15px;padding-top:60px}
+
+/* CARD */
+.card{
+  background:#fff;border:1px solid #eee;
+  border-radius:12px;padding:15px;
+  margin-bottom:15px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.stat{
+  text-align:center;
+}
+.stat h1{
+  font-size:40px;margin:5px 0;color:var(--gold);
+}
+
+/* LIST */
+.list{
+  border-top:1px solid #ddd;
+  margin-top:10px;
+  padding-top:10px;
+}
+.item{
+  border-bottom:1px dashed #ccc;
+  padding:8px 0;
+  font-size:14px;
+}
+.item:last-child{border:none}
+
+/* BUTTON */
+.btn-gold{
+  width:100%;padding:10px;
+  background:var(--gold);color:#fff;
+  border:none;border-radius:10px;
+  font-weight:bold;margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+<div class="sidebar" id="sidebar">
+  <img src="foto.jpg">
+  <a href="dashboard.html">Dashboard</a>
+  <a href="ranks.html">Ranks</a>
+  <a href="invoice.html">Invoice</a>
+  <a href="contact.html">Hubungi Kami</a>
+  <button class="back-btn" onclick="toggleMenu()">⬅ Back</button>
+</div>
+
+<div class="main">
+
+  <!-- TOTAL TRANSAKSI -->
+  <div class="card stat">
+    <p>Total Checkout Kamu</p>
+    <h1 id="total">0</h1>
+    <small>*Dihitung dari klik tombol checkout</small>
+  </div>
+
+  <!-- RIWAYAT -->
+  <div class="card">
+    <h3>📜 Riwayat Transaksi</h3>
+    <div id="list" class="list">
+      <p>Belum ada transaksi.</p>
+    </div>
+  </div>
+
+  <!-- BANTUAN -->
+  <div class="card">
+    <p>
+      ⚠️ Ada error atau kendala teknis?<br>
+      <b>Hubungi Developer Web</b> untuk atasi perbaikan.
+    </p>
+    <button class="btn-gold" onclick="hubungiDev()">Hubungi Developer Web</button>
+  </div>
+
+</div>
+
+<script>
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("active");
+}
+
+// TOTAL
+const total = localStorage.getItem("totalTransaksi") || 0;
+document.getElementById("total").innerText = total;
+
+// RIWAYAT
+const listEl = document.getElementById("list");
+const history = JSON.parse(localStorage.getItem("historyTransaksi") || "[]");
+
+if(history.length){
+  listEl.innerHTML="";
+  history.reverse().forEach((h,i)=>{
+    const div=document.createElement("div");
+    div.className="item";
+    div.innerHTML=`
+      <b>${h.rank}</b><br>
+      NamaMC: ${h.mc}<br>
+      Harga: ${h.harga}<br>
+      <small>${h.time}</small>
+    `;
+    listEl.appendChild(div);
+  });
+}
+
+// DEV
+function hubungiDev(){
+  const msg="Halo Developer Web, website KLITIK CRAFT butuh perbaikan.";
+  location.href="https://wa.me/6289654406537?text="+encodeURIComponent(msg);
+}
+</script>
+
+</body>
+</html>
