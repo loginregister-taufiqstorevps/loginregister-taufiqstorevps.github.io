@@ -112,7 +112,7 @@ function checkout() {
 
   if(!nama) { alert("Masukkan NamaMC dulu!"); return; }
 
-  const waNumber = "6283862091550";
+  const waNumber = "6285722659927";
   const pesan = `Hallo admin tolong konfirmasi\n𝘿𝘼𝙏𝘼 𝙂𝘼𝙈𝙀𝙎\n𝐍𝐀𝐌𝐀 𝐌𝐂: ${nama}\n𝐑𝐚𝐧𝐤𝐬: ${rank}\n𝐌𝐞𝐭𝐨𝐝𝐞: ${metode}`;
   const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(pesan)}`;
   window.open(url, "_blank");
