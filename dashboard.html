@@ -3,168 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLITIK CRAFT - Dashboard</title>
+<title>Dashboard - KLITIK CRAFT</title>
+
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #ffffff;
-    color: #111;
-    transition: margin-left 0.3s;
-  }
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#fff;color:#111}
+:root{--gold:#d4af37}
 
-  /* Sidebar */
-  .sidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 9998; /* dibawah tombol hamburger */
-    top: 0;
-    left: 0;
-    background-color: #ffffff;
-    overflow-x: hidden;
-    transition: 0.3s;
-    padding-top: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+/* MENU */
+.menu-btn{
+  position:fixed;top:15px;left:15px;
+  font-size:22px;background:var(--gold);
+  color:#fff;border:none;border-radius:8px;
+  padding:6px 10px;z-index:1001;
+}
 
-  .sidebar img {
-    width: 120px;
-    margin-top: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 5px #ff0000;
-  }
+/* SIDEBAR */
+.sidebar{
+  position:fixed;top:0;left:-260px;
+  width:260px;height:100%;
+  background:#fff;
+  box-shadow:2px 0 10px rgba(0,0,0,.15);
+  transition:.3s;z-index:1000;
+  display:flex;flex-direction:column;
+}
+.sidebar.active{left:0}
+.sidebar img{width:100%;height:120px;object-fit:cover}
+.sidebar a{
+  padding:14px;text-decoration:none;color:#111;
+  border-bottom:1px solid #eee;
+}
+.back-btn{
+  margin:15px;margin-top:auto;
+  padding:10px;background:var(--gold);
+  color:#fff;border:none;border-radius:10px;
+  font-weight:bold;
+}
 
-  .sidebar a, .sidebar button {
-    display: block;
-    color: #ff0000;
-    padding: 10px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
-    width: 90%;
-    text-align: center;
-    margin-top: 8px;
-    border-radius: 6px;
-    background: none;
-    border: 2px solid #ff0000;
-    cursor: pointer;
-  }
+/* MAIN */
+.main{padding:15px;padding-top:60px}
 
-  .sidebar a:hover, .sidebar button:hover {
-    background-color: #ffe5e5;
-  }
+/* CLOCK */
+.clock{
+  text-align:center;font-size:20px;
+  font-weight:bold;padding:10px;
+  background:#f5f5f5;border-radius:10px;
+  margin-bottom:12px;
+}
 
-  .sidebar button.logout-btn {
-    margin-top: auto;
-    margin-bottom: 15px;
-    background-color: #ff0000;
-    color: white;
-    border: none;
-  }
+/* BANNER (TENGAH ATAS) */
+.banner{
+  display:flex;
+  justify-content:center;
+  margin-bottom:15px;
+}
+.banner img{
+  width:100%;
+  max-width:500px;
+  max-height:140px;
+  object-fit:cover;
+  border-radius:12px;
+}
 
-  .sidebar button.logout-btn:hover {
-    background-color: #e60000;
-  }
+/* CARD */
+.card{
+  background:#fff;border:1px solid #eee;
+  border-radius:12px;padding:15px;
+  margin-bottom:15px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
 
-  /* Main content */
-  .main {
-    padding: 70px 20px 20px 20px; /* padding top biar tombol hamburger ga nutup HALLO */
-    transition: margin-left 0.3s;
-  }
+/* SHOLAT */
+.sholat{
+  background:#f9f9f9;border-radius:12px;
+  padding:15px;margin-bottom:15px;
+}
+.sholat h3{text-align:center;margin:0 0 10px}
+.sholat ul{list-style:none;padding:0;margin:0}
+.sholat li{
+  padding:6px 0;border-bottom:1px solid #ddd
+}
+.sholat li:last-child{border:none}
 
-  h1 {
-    color: #ff0000;
-    text-shadow: 0 0 5px #ffffff;
-    font-size: 20px;
-  }
-
-  p {
-    font-size: 14px;
-  }
-
-  /* Hamburger button kecil */
-  .openbtn {
-    font-size: 18px;
-    cursor: pointer;
-    background-color: #ff0000;
-    color: white;
-    padding: 6px 10px;
-    border: none;
-    border-radius: 6px;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 9999; /* pastikan tombol selalu di atas */
-  }
-
-  .openbtn:hover {
-    background-color: #e60000;
-  }
+/* BUTTON */
+.btn-gold{
+  width:100%;padding:10px;
+  background:var(--gold);color:#fff;
+  border:none;border-radius:10px;
+  font-weight:bold;
+}
+.footer-info{
+  text-align:center;
+  font-size:14px;
+  color:#555;
+  margin-top:10px;
+}
 </style>
 </head>
+
 <body>
 
-<!-- Hamburger -->
-<button id="hamburger" class="openbtn" onclick="openNav()">&#9776;</button>
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-<!-- Sidebar -->
-<div id="mySidebar" class="sidebar">
-  <img src="foto.jpg" alt="Server KLITIK CRAFT">
+<div class="sidebar" id="sidebar">
+  <img src="foto.jpg">
   <a href="ranks.html">Ranks</a>
   <a href="money.html">Money</a>
   <a href="skill.html">Skill</a>
   <a href="shard.html">Shard</a>
   <a href="invoice.html">Invoice</a>
-  <a href="hubungi.html">Hubungi Kami</a>
-  <button class="logout-btn" onclick="logout()">Log Out</button>
+  <a href="contact.html">Hubungi Kami</a>
+  <button class="back-btn" onclick="toggleMenu()">⬅ Back</button>
 </div>
 
-<!-- Main content -->
-<div class="main" id="main">
-  <h1 id="welcome">HALLO</h1>
-  <p>Selamat datang di website KLITIK CRAFT</p>
-  <p>Mau order rank atau yang lain bisa klik tombol garis tiga di kiri atas dulu</p>
-  <p>Disini harga rank murah, cek sekarang di KLITIK CRAFT bakal ada diskon kalau admin adain</p>
-  <p>Join sekarangg 🔥</p>
-</div>
+<div class="main">
 
-<!-- BackSound -->
-<audio id="backsound" autoplay loop>
-  <source src="backsound.mp3" type="audio/mpeg">
-</audio>
+  <div class="clock" id="clock">00:00:00</div>
+
+  <!-- BANNER TENGAH ATAS -->
+  <div class="banner">
+    <img src="banner.jpg" alt="Banner KLITIK CRAFT">
+  </div>
+
+  <!-- INFORMASI ATAS -->
+  <div class="card">
+    <h3>HALLO <span id="user">USER</span></h3>
+    <p>
+      Selamat datang di website <b>KLITIK CRAFT</b><br>
+      Mau order rank atau yang lain, klik menu ☰ di kiri ya.<br>
+      Rank murah & sering diskon 🔥
+    </p>
+    <button class="btn-gold" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- SHOLAT TENGAH -->
+  <div class="sholat">
+    <h3>🕌 Jadwal Sholat</h3>
+    <ul id="jadwal"><li>Loading...</li></ul>
+  </div>
+
+  <!-- INFO PALING BAWAH -->
+  <div class="card">
+    <p class="footer-info">
+      Mau informasi lainnya?<br>
+      Gabung grup WhatsApp kami 📢<br><br>
+      🔥 <b>Promo:</b><br>
+      Promosiin server kami = <b>DAPAT RANK GRATIS</b>!
+    </p>
+  </div>
+
+</div>
 
 <script>
-  // Ambil Nama Minecraft dari login
-  const mcName = localStorage.getItem("mcName");
-  if(mcName && mcName.trim() !== "") {
-    document.getElementById("welcome").innerText = `HALLO ${mcName}`;
-  } else {
-    document.getElementById("welcome").innerText = "HALLO User"; // fallback
-  }
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("active");
+}
 
-  function logout() {
-    localStorage.removeItem("mcName");
-    localStorage.removeItem("umur");
-    localStorage.removeItem("wa");
-    window.location.href = "index.html";
-  }
+const mc=localStorage.getItem("mcName");
+if(mc){document.getElementById("user").innerText=mc;}
 
-  function openNav() {
-    document.getElementById("mySidebar").style.width = "180px"; // lebih kecil di HP
-    document.getElementById("main").style.marginLeft = "180px";
-    document.getElementById("hamburger").style.display = "none";
-  }
+function logout(){
+  localStorage.clear();
+  location.href="index.html";
+}
 
-  function closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
-    document.getElementById("hamburger").style.display = "block";
-  }
+// JAM
+const clockEl=document.getElementById("clock");
+function clock(){
+  const n=new Date();
+  clockEl.innerText=
+    String(n.getHours()).padStart(2,"0")+":"+
+    String(n.getMinutes()).padStart(2,"0")+":"+
+    String(n.getSeconds()).padStart(2,"0");
+}
+setInterval(clock,1000);clock();
+
+// SHOLAT
+fetch("https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=2")
+.then(r=>r.json())
+.then(d=>{
+  const t=d.data.timings;
+  document.getElementById("jadwal").innerHTML=`
+    <li>Subuh: ${t.Fajr}</li>
+    <li>Dzuhur: ${t.Dhuhr}</li>
+    <li>Ashar: ${t.Asr}</li>
+    <li>Maghrib: ${t.Maghrib}</li>
+    <li>Isya: ${t.Isha}</li>`;
+});
 </script>
 
 </body>
-  </html>
+    </html>
