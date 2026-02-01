@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLITIK CRAFT - Ranks</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #111;
+}
+
+/* Header */
+h1 {
+  text-align: center;
+  color: #ff0000;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ff0000;
+  margin-top: 20px;
+}
+
+/* Container kotak rank */
+.rank-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+/* Kotak rank */
+.rank-box {
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  color: #111;
+}
+
+.rank-box h2 {
+  margin: 0 0 10px 0;
+}
+
+.rank-box ul {
+  margin: 0 0 10px 20px;
+  padding: 0;
+}
+
+.rank-box button {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.rank-box button:hover {
+  background-color: #e60000;
+}
+
+/* Warna kotak sesuai rank */
+.warga { background-color: #d3d3d3; }  /* abu */
+.vip { background-color: #98fb98; }     /* hijau */
+.supreme { background-color: #dda0dd; } /* ungu */
+.mythich { background-color: #add8e6; } /* biru */
+.sultan { background-color: #ff7f7f; }  /* merah muda */
+.royal { background-color: #ffa500; }   /* oranye */
+
+/* Responsive */
+@media (max-width: 600px) {
+  .rank-container { padding: 10px; }
+  .rank-box button { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<h1>📢 PRICELIST RANK KLITIKCRAFT INDONESIA 📢</h1>
+<p style="text-align:center;">Kalau mau main makin seru & praktis, beli rank sekarang! Setiap rank punya fitur masing-masing 🚀</p>
+
+<div class="rank-container">
+
+  <!-- WARGA -->
+  <div class="rank-box warga">
+    <h2>🟫 WARGA (DEFAULT)</h2>
+    <ul>
+      <li>Rank gratis (player biasa)</li>
+    </ul>
+    <button onclick="window.location.href='target-order.html'">Order</button>
+  </div>
+
+  <!-- VIP -->
+  <div class="rank-box vip">
+    <h2>🟩 VIP — Rp20.000</h2>
+    <ul>
+      <li>3x Sethome</li>
+      <li>/home</li>
+      <li>/anvil</li>
+      <li>/fly</li>
+      <li>/pv 2</li>
+      <li>/kit VIP</li>
+      <li>Money Rp100.000</li>
+      <li>Claim Limit 5</li>
+      <li>Block Limit 15.000</li>
+      <li>Sk 10 Level</li>
+      <li>Pwarp 2</li>
+    </ul>
+    <button onclick="window.location.href='target-order.html'">Order</button>
+  </div>
+
+  <!-- SUPREME -->
+  <div class="rank-box supreme">
+    <h2>🟪 SUPREME — Rp35.000</h2>
+    <ul>
+      <li>4x Sethome</li>
+      <li>/ec (Enderchest)</li>
+      <li>/home</li>
+      <li>/fly</li>
+      <li>/pv 3</li>
+      <li>/anvil</li>
+      <li>/kit SUPREME</li>
+      <li>Termasuk semua fitur VIP</li>
+      <li>Money Rp500.000</li>
+      <li>Claim Limit 6</li>
+      <li>Block Limit 20.000</li>
+      <li>Sk 20 Level</li>
+      <li>Pwarp 3</li>
+    </ul>
+    <button onclick="window.location.href='target-order.html'">Order</button>
+  </div>
+
+  <!-- MYTHICH -->
+  <div class="rank-box mythich">
+    <h2>🟦 MYTHICH — Rp50.000</h2>
+    <ul>
+      <li>6x Sethome</li>
+      <li>/ec (Enderchest)</li>
+      <li>/fly + Fly Nether</li>
+      <li>/nick</li>
+      <li>/feed</li>
+      <li>/anvil</li>
+      <li>/pv 4</li>
+      <li>/kit MYTHICH</li>
+      <li>Termasuk semua fitur SUPREME</li>
+      <li>Money Rp5.000.000</li>
+      <li>Claim Limit 7</li>
+      <li>Block Limit 30.000</li>
+      <li>Sk 30 Level</li>
+      <li>Pwarp 3</li>
+    </ul>
+    <button onclick="window.location.href='target-order.html'">Order</button>
+  </div>
+
+  <!-- SULTAN -->
+  <div class="rank-box sultan">
+    <h2>🟥 SULTAN — Rp100.000 👑</h2>
+    <ul>
+      <li>7x Sethome</li>
+      <li>/ec (Enderchest)</li>
+      <li>/fly World, Nether & The End</li>
+      <li>/nick</li>
+      <li>/repair</li>
+      <li>/anvil</li>
+      <li>/pv 5</li>
+      <li>/kit SULTAN</li>
+      <li>Termasuk semua fitur MYTHICH</li>
+      <li>Money Rp10.000.000</li>
+      <li>Claim Limit 8</li>
+      <li>Block Limit 40.000</li>
+      <li>Sk 40 Level</li>
+      <li>Pwarp 4</li>
+    </ul>
+    <button onclick="window.location.href='target-order.html'">Order</button>
+  </div>
+
+  <!-- ROYAL -->
+  <div class="rank-box royal">
+    <h2>🟧 ROYAL — Rp15.000.000</h2>
+    <ul>
+      <li>8x Sethome</li>
+      <li>/ec (Enderchest)</li>
+      <li>/fly World, Nether & The End</li>
+      <li>/Nick</li>
+      <li>/repair</li>
+      <li>/anvil</li>
+      <li>/pv 6</li>
+      <li>/kit ROYAL</li>
+      <li>/Craft</li>
+      <li>/Feed</li>
+      <li>Termasuk Semua Fitur MYTHICH</li>
+      <li>Money Rp15.000.000</li>
+      <li>Claim Limit 10</li>
+      <li>Block Limit 50.000</li>
+      <li>SK 50 Level</li>
+      <li>Pwarp 5</li>
+    </ul>
+    <button onclick="window.location.href='target-order.html'">Order</button>
+  </div>
+
+</div>
+
+</body>
+</html>
