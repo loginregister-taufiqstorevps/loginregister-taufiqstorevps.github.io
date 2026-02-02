@@ -5,49 +5,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - KLITIK CRAFT</title>
 <link rel="icon" type="image/jpeg" href="foto.jpg">
-<!-- Google reCAPTCHA -->
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif;margin:0;padding:0}
-body, html{height:100%;background:#fff;display:flex;justify-content:center;align-items:center}
-.container{width:90%;max-width:400px;background:#fff;padding:25px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.2);text-align:center;position:relative}
-h2{color:#d4af37;margin-bottom:15px}
-input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:8px;font-size:16px}
-.btn-submit{width:100%;padding:12px;background:#d4af37;color:#fff;border:none;border-radius:10px;font-size:16px;cursor:pointer;transition:0.3s}
-.btn-submit:hover{box-shadow:0 0 10px #d4af37}
-.alert{display:none;padding:10px;background:#f8d7da;color:#721c24;border-radius:8px;margin-top:10px;animation:none}
-.alert.shake{animation:shake 0.3s}
-@keyframes shake{0%{transform:translateX(0);}25%{transform:translateX(-6px);}50%{transform:translateX(6px);}75%{transform:translateX(-6px);}100%{transform:translateX(0);}}
-.banner{margin-bottom:15px}
-.banner img{width:100%;max-height:100px;object-fit:cover;border-radius:10px}
-.successMsg{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:bold;font-size:18px;opacity:0;transform:scale(0.5);transition: all 0.5s ease}
-.successMsg.active{opacity:1;transform:scale(1)}
+*{box-sizing:border-box;font-family:Arial,sans-serif;margin:0;padding:0;}
+body{background:#111;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;transition:all 0.3s;}
+body.dark{background:#222;}
+.login-box{background:#000;padding:30px;border-radius:15px;box-shadow:0 0 15px #d4af37;width:350px;position:relative;border:2px solid #d4af37;}
+.login-box h2{text-align:center;margin-bottom:20px;color:#d4af37;text-shadow:0 0 8px #d4af37;}
+.login-box img{width:100%;border-radius:12px;margin-bottom:15px;cursor:pointer;transition:0.5s;}
+.input-group{margin-bottom:15px;}
+.input-group label{display:block;margin-bottom:5px;color:#ffc;}
+.input-group input{width:100%;padding:10px;border:1px solid #ffc;border-radius:8px;background:#111;color:#ffc;outline:none;transition:0.3s;}
+.input-group input:focus{box-shadow:0 0 10px #d4af37;border-color:#d4af37;}
+.btn-gold{width:100%;padding:10px;background:#d4af37;color:#111;border:none;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.3s;text-shadow:0 0 6px #fff;}
+.btn-gold:hover{box-shadow:0 0 15px #d4af37;}
+.alert{display:none;padding:10px;background:#ff0044;color:#fff;border-radius:8px;margin-bottom:10px;text-align:center;position:absolute;top:-50px;left:50%;transform:translateX(-50%);}
+.alert.shake{animation:shake 0.3s;}
+@keyframes shake{0%{transform:translateX(0);}25%{translateX(-6px);}50%{translateX(6px);}75%{translateX(-6px);}100%{transform:translateX(0);}}
+.loading-overlay{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);border-radius:15px;justify-content:center;align-items:center;flex-direction:column;color:#ffc;font-weight:bold;}
+.loading-overlay .loader{border:4px solid #fff;border-top:4px solid #d4af37;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite;margin-bottom:10px;}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="banner">
-    <img src="banner.jpg" alt="Banner KLITIK CRAFT">
+<div class="login-box">
+  <img src="banner.jpg" alt="Banner KLITIK CRAFT" id="banner">
+  <h2>Login</h2>
+  <div class="alert" id="alertBox"></div>
+
+  <div class="input-group">
+    <label>Email</label>
+    <input type="email" id="email" placeholder="yourname@gmail.com">
   </div>
-  <h2>Login KLITIK CRAFT</h2>
-  <input type="email" id="email" placeholder="Email">
-  <input type="text" id="mcName" placeholder="Nama Minecraft">
-  <input type="text" id="whatsapp" placeholder="Nomor WhatsApp (+62...)">
-  <input type="password" id="password" placeholder="Password">
+  <div class="input-group">
+    <label>Nama Minecraft</label>
+    <input type="text" id="mcName" placeholder="Your Minecraft name">
+  </div>
+  <div class="input-group">
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Password">
+  </div>
 
-  <!-- Google reCAPTCHA -->
-  <div class="g-recaptcha" data-sitekey="6Le8p10sAAAAAGVfiorLUF-FAI6ujEA8F2MfCbpZ" style="margin:10px 0;"></div>
+  <div class="g-recaptcha" data-sitekey="6Le8p10sAAAAAGVfiorLUF-FAI6ujEA8F2MfCbpZ" style="transform:scale(0.8);transform-origin:0 0;margin-bottom:10px;"></div>
 
-  <button class="btn-submit" onclick="login()">Submit</button>
+  <button class="btn-gold" onclick="login()">Login</button>
 
-  <!-- Alert dan Success -->
-  <div class="alert" id="alertBox">Error</div>
-  <div class="successMsg" id="successBox">✅ Login Success!</div>
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loader"></div>
+    LOADING...
+  </div>
 </div>
 
 <script>
-// ALERT CUSTOM
+// ALERT SISTEM
 function showAlert(msg){
   const a=document.getElementById("alertBox");
   a.innerText=msg;
@@ -56,63 +67,37 @@ function showAlert(msg){
   setTimeout(()=>{a.style.display="none";a.classList.remove("shake");},3000);
 }
 
-// SUCCESS ANIMASI
-function showSuccess(msg){
-  const s=document.getElementById("successBox");
-  s.innerText="✅ "+msg;
-  s.style.display="flex";
-  s.classList.add("active");
-  setTimeout(()=>{s.style.display="none";s.classList.remove("active");},1500);
+// EASTER EGG
+let clickCount = 0;
+document.getElementById("banner").onclick = function(){
+  clickCount++;
+  if(clickCount>=5){
+    alert("🎉 Easter Egg activated! 🎉");
+    clickCount = 0;
+  }
 }
 
 // LOGIN FUNCTION
 function login(){
   const email=document.getElementById("email").value.trim();
   const mc=document.getElementById("mcName").value.trim();
-  const wa=document.getElementById("whatsapp").value.trim();
   const pass=document.getElementById("password").value.trim();
-  
-  if(!email || !mc || !wa || !pass){
-    showAlert("Kamu ada yang salah nih, coba cek lagi!");
-    return;
-  }
+  const overlay=document.getElementById("loadingOverlay");
 
-  // VALIDASI EMAIL
-  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
-  if(!emailPattern.test(email)){
-    showAlert("Email tidak valid!");
-    return;
-  }
+  // VALIDASI
+  if(!email || !mc || !pass){showAlert("Kamu ada yang salah nih coba cek lagi"); return;}
+  if(!/^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)){showAlert("Email invalid!"); return;}
+  if(!grecaptcha.getResponse()){showAlert("Please complete ReCaptcha!"); return;}
 
-  // VALIDASI WHATSAPP
-  const waPattern = /^\+62[0-9]{8,14}$/;
-  if(!waPattern.test(wa)){
-    showAlert("Nomor WhatsApp tidak valid! Harus mulai +62 dan hanya angka.");
-    return;
-  }
+  // SHOW LOADING
+  overlay.style.display="flex";
 
-  // VALIDASI RECAPTCHA
-  const recaptcha = grecaptcha.getResponse();
-  if(recaptcha.length === 0){
-    showAlert("Silakan centang reCAPTCHA untuk melanjutkan!");
-    return;
-  }
-
-  // Simpan sementara
-  localStorage.setItem("email", email);
-  localStorage.setItem("mcName", mc);
-  localStorage.setItem("whatsapp", wa);
-  localStorage.setItem("password", pass);
-
-  // ANIMASI SUKSES
-  showSuccess("Login Success");
-
-  // Loading dashboard 2 detik
   setTimeout(()=>{
-    window.location.href="dashboard.html";
+    overlay.innerHTML = "✅ Login Success!";
+    localStorage.setItem("mcName", mc);
+    setTimeout(()=>{window.location.href="dashboard.html";},1000);
   },1500);
 }
 </script>
-
 </body>
-  </html>
+      </html>
