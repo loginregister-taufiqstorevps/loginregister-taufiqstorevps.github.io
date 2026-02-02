@@ -1,105 +1,209 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLITIK CRAFT - Login</title>
+<title>Login - KLITIK CRAFT</title>
+
+<link rel="icon" type="image/jpeg" href="foto.jpg?v=1">
+
 <style>
-  <link rel="icon" type="image/jpeg" href="foto.jpg?v=1">
-  body {
-    margin: 0;
-    background-color: #ffffff;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{
+  margin:0;
+  background:#f5f5f5;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+:root{--gold:#d4af37}
 
-  .login-box {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.2);
-    text-align: center;
-    width: 90%;
-    max-width: 320px;
-  }
+.login-box{
+  width:90%;
+  max-width:400px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
+  padding:20px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
+.banner img{
+  width:100%;
+  max-height:140px;
+  border-radius:12px;
+  object-fit:cover;
+  margin-bottom:15px;
+}
 
-  .header img {
-    width: 40px; /* kecil di HP */
-    margin-right: 8px;
-  }
+.login-box h2{
+  margin:10px 0 20px;
+  color:var(--gold);
+}
 
-  .header h2 {
-    color: gold;
-    font-size: 18px;
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff0;
-    margin: 0;
-  }
+.login-box input{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:16px;
+  transition: all 0.2s;
+}
 
-  .login-box input {
-    width: 100%;
-    padding: 10px;
-    margin: 6px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
+.login-box button{
+  width:100%;
+  padding:12px;
+  background:var(--gold);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  margin-top:12px;
+  cursor:pointer;
+}
 
-  .login-box button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 12px;
-    border: none;
-    background-color: #ff0000;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+.login-box button:hover{
+  opacity:0.9;
+}
 
-  .login-box button:hover {
-    background-color: #e60000;
-  }
+/* ALERT SYSTEM */
+.alert{
+  display:none;
+  font-size:14px;
+  margin-top:8px;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid transparent;
+  animation:none;
+}
+
+.alert.error{
+  background:#f8d7da;
+  color:#721c24;
+  border-color:#f5c6cb;
+}
+
+.alert.success{
+  background:#d4edda;
+  color:#155724;
+  border-color:#c3e6cb;
+}
+
+.alert.shake{
+  animation: shake 0.3s;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-6px);}
+  50%{transform:translateX(6px);}
+  75%{transform:translateX(-6px);}
+  100%{transform:translateX(0);}
+}
+
+.successMsg{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-weight:bold;
+  font-size:18px;
+  opacity:0;
+  transform:scale(0.5);
+  transition: all 0.5s ease;
+}
+
+.successMsg.active{
+  opacity:1;
+  transform:scale(1);
+}
+
+.footer{
+  margin-top:15px;
+  font-size:12px;
+  color:#777;
+}
 </style>
 </head>
 <body>
-  <div class="login-box">
-    <div class="header">
-      <img src="foto.jpg" alt="Server KLITIK CRAFT">
-      <h2>Mau beli? Login dulu</h2>
-    </div>
 
-    <form id="loginForm">
-      <input type="text" id="mcName" placeholder="Nama Minecraft" required><br>
-      <input type="number" id="umur" placeholder="Umur" required><br>
-      <input type="text" id="wa" placeholder="Nomer WA" required><br>
-      <button type="submit">Login</button>
-    </form>
+<div class="login-box">
+
+  <div class="banner">
+    <img src="banner.jpg" alt="KLITIK CRAFT">
   </div>
 
-  <script>
-    const form = document.getElementById('loginForm');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const mcName = document.getElementById('mcName').value;
-      const umur = document.getElementById('umur').value;
-      const wa = document.getElementById('wa').value;
+  <h2>Login KLITIK CRAFT</h2>
 
-      localStorage.setItem('mcName', mcName);
-      localStorage.setItem('umur', umur);
-      localStorage.setItem('wa', wa);
+  <form id="loginForm">
+    <input type="text" id="mcName" placeholder="Minecraft Name" required>
+    <input type="text" id="waNumber" placeholder="WhatsApp Number (+62)" required>
 
-      window.location.href = "dashboard.html";
-    });
-  </script>
+    <div class="alert error" id="alertError">Something is wrong! Check again.</div>
+    <div class="successMsg" id="alertSuccess">✅ Login Success!</div>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <div class="footer">
+    Don't have an account? <a href="register.html" style="color:var(--gold); font-weight:bold;">Register here</a><br>
+    KLITIK CRAFT © 2026
+  </div>
+
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const mc = document.getElementById("mcName").value.trim();
+  let wa = document.getElementById("waNumber").value.trim();
+  const alertError = document.getElementById("alertError");
+  const alertSuccess = document.getElementById("alertSuccess");
+
+  alertError.style.display="none";
+  alertError.classList.remove("shake");
+  alertSuccess.classList.remove("active");
+
+  // CHECK FIELDS
+  if(!mc || !wa){
+    alertError.style.display="block";
+    alertError.innerText="Something is wrong! Check again.";
+    alertError.classList.add("shake");
+    return;
+  }
+
+  // WA validation +62
+  if(!wa.startsWith("+62") || !/^\+62\d{8,15}$/.test(wa)){
+    alertError.style.display="block";
+    alertError.innerText="WhatsApp number must be valid (+62)!";
+    alertError.classList.add("shake");
+    return;
+  }
+
+  // CHECK REGISTERED USER
+  let users = JSON.parse(localStorage.getItem("users") || "[]");
+  let user = users.find(u => u.mc === mc);
+
+  if(!user){
+    alertError.style.display="block";
+    alertError.innerText="User not registered!";
+    alertError.classList.add("shake");
+    return;
+  }
+
+  // LOGIN SUCCESS
+  localStorage.setItem("mcName", mc);
+  localStorage.setItem("waNumber", wa);
+
+  alertSuccess.classList.add("active");
+  setTimeout(()=>{ location.href="dashboard.html"; },1200);
+});
+</script>
+
 </body>
-</html>
+  </html>
