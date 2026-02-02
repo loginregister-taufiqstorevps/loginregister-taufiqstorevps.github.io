@@ -1,95 +1,215 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Register - TaufiqStore</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #8000FF; /* ungu */
-      color: white;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - KLITIK CRAFT</title>
 
-    h2 {
-      font-size: 32px;
-      margin-bottom: 20px;
-    }
+<link rel="icon" type="image/jpeg" href="foto.jpg?v=1">
 
-    input {
-      width: 300px;
-      height: 50px;
-      font-size: 20px;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: none;
-    }
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{
+  margin:0;
+  background:#f5f5f5;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+:root{--gold:#d4af37}
 
-    button {
-      width: 320px;
-      height: 60px;
-      font-size: 24px;
-      background-color: #2196F3; /* biru */
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
+.register-box{
+  width:90%;
+  max-width:400px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
+  padding:20px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
 
-    button:hover {
-      background-color: #1976D2;
-    }
+.banner img{
+  width:100%;
+  max-height:140px;
+  border-radius:12px;
+  object-fit:cover;
+  margin-bottom:15px;
+}
 
-    a {
-      margin-top: 15px;
-      font-size: 18px;
-      text-decoration: none;
-      color: #FFD700; /* kuning kontras */
-    }
-  </style>
+.register-box h2{
+  margin:10px 0 20px;
+  color:var(--gold);
+}
+
+.register-box input{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:16px;
+  transition: all 0.2s;
+}
+
+.register-box button{
+  width:100%;
+  padding:12px;
+  background:var(--gold);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  margin-top:12px;
+  cursor:pointer;
+}
+
+.register-box button:hover{
+  opacity:0.9;
+}
+
+.error{
+  background:#f8d7da;
+  color:#721c24;
+  font-size:14px;
+  margin-top:8px;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #f5c6cb;
+  animation:none;
+}
+
+.error.shake{
+  animation: shake 0.3s;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-6px);}
+  50%{transform:translateX(6px);}
+  75%{transform:translateX(-6px);}
+  100%{transform:translateX(0);}
+}
+
+.success{
+  color:green;
+  font-size:16px;
+  margin:10px 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-weight:bold;
+  font-size:18px;
+  opacity:0;
+  transform:scale(0.5);
+  transition: all 0.5s ease;
+}
+
+.success.active{
+  opacity:1;
+  transform:scale(1);
+}
+
+.footer{
+  margin-top:15px;
+  font-size:12px;
+  color:#777;
+}
+
+.g-recaptcha{
+  margin:10px 0;
+}
+</style>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
-<h2>Register</h2>
+<div class="register-box">
 
-<input id="email" placeholder="Email (@gmail.com)">
-<input id="phone" placeholder="No HP">
-<input id="password" type="password" placeholder="Password">
+  <div class="banner">
+    <img src="banner.jpg" alt="KLITIK CRAFT">
+  </div>
 
-<button onclick="register()">Register Sekarang</button>
-<a href="index.html">Sudah punya akun? Login</a>
+  <h2>Register KLITIK CRAFT</h2>
+
+  <form id="registerForm">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="text" id="mcName" placeholder="Nama Minecraft" required>
+    <input type="password" id="password" placeholder="Password" required>
+
+    <!-- Google reCAPTCHA -->
+    <div class="g-recaptcha" data-sitekey="6Le8p10sAAAAAGVfiorLUF-FAI6ujEA8F2MfCbpZ"></div>
+
+    <div class="error" id="errorMsg" style="display:none;">Kamu ada yang salah nih, coba cek lagi!</div>
+    <div class="success" id="successMsg">✅ Registrasi Berhasil!</div>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <div class="footer">
+    Sudah punya akun? <a href="index.html" style="color:var(--gold); font-weight:bold;">Login di sini</a><br>
+    KLITIK CRAFT © 2026
+  </div>
+
+</div>
 
 <script>
-function register() {
-  const email = document.getElementById("email").value.trim().toLowerCase();
-  const phone = document.getElementById("phone").value.trim();
-  const password = document.getElementById("password").value;
+document.getElementById("registerForm").addEventListener("submit", function(e){
+  e.preventDefault();
 
-  // filter email @gmail.com
-  const emailRegex = /^[a-z0-9._%+-]+@gmail\.com$/;
-  if (!emailRegex.test(email)) {
-    alert("Email tidak valid! Harus @gmail.com");
+  const email = document.getElementById("email").value.trim();
+  const username = document.getElementById("username").value.trim();
+  const mc = document.getElementById("mcName").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const errorMsg = document.getElementById("errorMsg");
+  const successMsg = document.getElementById("successMsg");
+
+  errorMsg.style.display = "none";
+  errorMsg.classList.remove("shake");
+  successMsg.classList.remove("active");
+
+  // CEK FIELD
+  if(!email || !username || !mc || !password){
+    errorMsg.style.display = "block";
+    errorMsg.innerText = "Kamu ada yang salah nih, coba cek lagi!";
+    errorMsg.classList.add("shake");
     return;
   }
 
-  if (password.length < 6) {
-    alert("Password minimal 6 karakter");
+  // CEK EMAIL VALID
+  if(!/^\S+@\S+\.\S+$/.test(email)){
+    errorMsg.style.display = "block";
+    errorMsg.innerText = "Kamu ada yang salah nih, coba cek lagi!";
+    errorMsg.classList.add("shake");
     return;
   }
 
-  // simpan data user
-  localStorage.setItem("user", JSON.stringify({ email, phone, password }));
-  localStorage.setItem("login", "true");
+  // CEK reCAPTCHA
+  const captchaResponse = grecaptcha.getResponse();
+  if(!captchaResponse){
+    errorMsg.style.display = "block";
+    errorMsg.innerText = "Harap verifikasi Google!";
+    errorMsg.classList.add("shake");
+    return;
+  }
 
-  // redirect ke dashboard top up (repo GitHub lain)
-  location.href = "https://taufiqstorevps-shop.github.io"; // ganti ini ke link dashboard top up lu
-}
-</script>
+  // CEK USER UDH ADA
+  let users = JSON.parse(localStorage.getItem("users") || "[]");
+  if(users.find(u => u.mc === mc || u.username === username || u.email === email)){
+    errorMsg.style.display = "block";
+    errorMsg.innerText = "User / MC / Email sudah terdaftar!";
+    errorMsg.classList.add("shake");
+    return;
+  }
 
-</body>
-</html>
+  // SIMPAN USER
+  users.push({email, username, mc, password});
+  localStorage.setItem("users", JSON.stringify(users));
+
+  // ANIMASI SUKSES
+  successMsg.classList
