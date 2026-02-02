@@ -5,169 +5,140 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - KLITIK CRAFT</title>
 <link rel="icon" type="image/jpeg" href="foto.jpg?v=1">
-  
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#fff;color:#111}
+*{box-sizing:border-box;font-family:Arial,sans-serif;margin:0;padding:0}
 :root{--gold:#d4af37}
+body, html{height:100%;background:#fff}
+
+/* LOADING AWAL */
+#loading{display:flex;justify-content:center;align-items:center;position:fixed;width:100%;height:100%;font-size:28px;font-weight:bold;background:#111;color:#fff;z-index:10000}
+
+/* DASHBOARD CONTENT */
+#dashboardContent{display:none;}
 
 /* MENU */
-.menu-btn{
-  position:fixed;top:15px;left:15px;
-  font-size:22px;background:var(--gold);
-  color:#fff;border:none;border-radius:8px;
-  padding:6px 10px;z-index:1001;
-}
-
-/* SIDEBAR */
-.sidebar{
-  position:fixed;top:0;left:-260px;
-  width:260px;height:100%;
-  background:#fff;
-  box-shadow:2px 0 10px rgba(0,0,0,.15);
-  transition:.3s;z-index:1000;
-  display:flex;flex-direction:column;
-}
+.menu-btn{position:fixed;top:15px;left:15px;font-size:22px;background:var(--gold);color:#fff;border:none;border-radius:8px;padding:6px 10px;z-index:1001}
+.sidebar{position:fixed;top:0;left:-260px;width:260px;height:100%;background:#fff;box-shadow:2px 0 10px rgba(0,0,0,.15);transition:.3s;z-index:1000;display:flex;flex-direction:column}
 .sidebar.active{left:0}
 .sidebar img{width:100%;height:120px;object-fit:cover}
-.sidebar a{
-  padding:14px;text-decoration:none;color:#111;
-  border-bottom:1px solid #eee;
-}
-.back-btn{
-  margin:15px;margin-top:auto;
-  padding:10px;background:var(--gold);
-  color:#fff;border:none;border-radius:10px;
-  font-weight:bold;
-}
+.sidebar a{padding:14px;text-decoration:none;color:#111;border-bottom:1px solid #eee;cursor:pointer}
+.back-btn{margin:15px;margin-top:auto;padding:10px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-weight:bold}
 
 /* MAIN */
 .main{padding:15px;padding-top:60px}
 
 /* CLOCK */
-.clock{
-  text-align:center;font-size:20px;
-  font-weight:bold;padding:10px;
-  background:#f5f5f5;border-radius:10px;
-  margin-bottom:12px;
-}
+.clock{text-align:center;font-size:20px;font-weight:bold;padding:10px;background:#f5f5f5;border-radius:10px;margin-bottom:12px}
 
-/* BANNER (TENGAH ATAS) */
-.banner{
-  display:flex;
-  justify-content:center;
-  margin-bottom:15px;
-}
-.banner img{
-  width:100%;
-  max-width:500px;
-  max-height:140px;
-  object-fit:cover;
-  border-radius:12px;
-}
+/* BANNER */
+.banner{display:flex;justify-content:center;margin-bottom:15px}
+.banner img{width:100%;max-width:500px;max-height:140px;object-fit:cover;border-radius:12px}
 
 /* CARD */
-.card{
-  background:#fff;border:1px solid #eee;
-  border-radius:12px;padding:15px;
-  margin-bottom:15px;
-  box-shadow:0 2px 8px rgba(0,0,0,.05);
-}
+.card{background:#fff;border:1px solid #eee;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 
 /* SHOLAT */
-.sholat{
-  background:#f9f9f9;border-radius:12px;
-  padding:15px;margin-bottom:15px;
-}
+.sholat{background:#f9f9f9;border-radius:12px;padding:15px;margin-bottom:15px}
 .sholat h3{text-align:center;margin:0 0 10px}
 .sholat ul{list-style:none;padding:0;margin:0}
-.sholat li{
-  padding:6px 0;border-bottom:1px solid #ddd
-}
+.sholat li{padding:6px 0;border-bottom:1px solid #ddd}
 .sholat li:last-child{border:none}
 
 /* BUTTON */
-.btn-gold{
-  width:100%;padding:10px;
-  background:var(--gold);color:#fff;
-  border:none;border-radius:10px;
-  font-weight:bold;
-}
-.footer-info{
-  text-align:center;
-  font-size:14px;
-  color:#555;
-  margin-top:10px;
-}
+.btn-gold{width:100%;padding:10px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:8px}
+.footer-info{text-align:center;font-size:14px;color:#555;margin-top:10px}
+
+/* ALERT SYSTEM */
+.alert{display:none;font-size:14px;margin-top:8px;padding:10px;border-radius:10px;border:1px solid transparent;animation:none}
+.alert.error{background:#f8d7da;color:#721c24;border-color:#f5c6cb}
+.alert.success{background:#d4edda;color:#155724;border-color:#c3e6cb}
+.alert.shake{animation: shake 0.3s}
+@keyframes shake{0%{transform:translateX(0);}25%{transform:translateX(-6px);}50%{transform:translateX(6px);}75%{transform:translateX(-6px);}100%{transform:translateX(0);}}
+
+/* SUCCESS ANIMATION */
+.successMsg{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:bold;font-size:18px;opacity:0;transform:scale(0.5);transition: all 0.5s ease}
+.successMsg.active{opacity:1;transform:scale(1)}
+
+/* LOADING MENU BAR */
+#menuLoading{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);color:#fff;z-index:10000;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+#menuLoading h2{margin-bottom:15px}
+#menuLoading p{margin-top:10px}
+#menuLoading .progress-container{width:300px;height:12px;border:2px solid #fff;border-radius:6px;overflow:hidden}
+#menuLoading .progress-bar{width:0%;height:100%;background:var(--gold)}
 </style>
 </head>
-<link rel="icon" type="image/jpeg" href="foto.jpg">
-  
 <body>
+
+<!-- LOADING AWAL -->
+<div id="loading">𝙇𝙊𝘼𝘿𝙄𝙉𝙂...</div>
+
+<!-- LOADING MENU -->
+<div id="menuLoading">
+  <h2>𝙇𝙊𝘼𝘿𝙄𝙉𝙂</h2>
+  <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+  <p>-------------------------------------</p>
+</div>
+
+<!-- DASHBOARD CONTENT -->
+<div id="dashboardContent">
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
 <div class="sidebar" id="sidebar">
   <img src="foto.jpg">
-  <a href="ranks.html">Ranks</a>
-  <a href="money.html">Money</a>
-  <a href="skill.html">Skill</a>
-  <a href="shard.html">Shard</a>
-  <a href="invoice.html">Invoice</a>
-  <a href="contact.html">Hubungi Kami</a>
-  <button class="back-btn" onclick="toggleMenu()">⬅ Back</button>
+  <a onclick="loadMenu('ranks.html')">Ranks</a>
+  <a onclick="loadMenu('money.html')">Money</a>
+  <a onclick="loadMenu('skill.html')">Skill</a>
+  <a onclick="loadMenu('shard.html')">Shard</a>
+  <a onclick="loadMenu('invoice.html')">Invoice</a>
+  <a onclick="loadMenu('contact.html')">Hubungi Developer</a>
+  <button class="back-btn" onclick="toggleMenu()">⬅ Kembali</button>
 </div>
 
 <div class="main">
 
   <div class="clock" id="clock">00:00:00</div>
 
-  <!-- BANNER TENGAH ATAS -->
   <div class="banner">
     <img src="banner.jpg" alt="Banner KLITIK CRAFT">
   </div>
 
-  <!-- INFORMASI ATAS -->
   <div class="card">
     <h3>HALLO <span id="user">USER</span></h3>
     <p>
-      Selamat datang di website <b>KLITIK CRAFT</b><br>
-      Mau order rank atau yang lain, klik menu ☰ di kiri ya.<br>
-      Rank murah & sering diskon 🔥
+      Selamat datang di <b>KLITIK CRAFT</b>! Klik menu ☰ di kiri untuk order ranks atau fitur lainnya. Diskon kadang tersedia 🔥
     </p>
     <button class="btn-gold" onclick="logout()">Logout</button>
   </div>
 
-  <!-- SHOLAT TENGAH -->
+  <div class="alert error" id="alertError">Something went wrong!</div>
+  <div class="successMsg" id="alertSuccess">✅ Success!</div>
+
   <div class="sholat">
     <h3>🕌 Jadwal Sholat</h3>
     <ul id="jadwal"><li>Loading...</li></ul>
   </div>
 
-  <!-- INFO PALING BAWAH -->
   <div class="card">
     <p class="footer-info">
-      Mau informasi lainnya?<br>
-      Gabung grup WhatsApp kami 📢<br><br>
-      🔥 <b>Promo:</b><br>
-      Promosiin server kami = <b>DAPAT RANK GRATIS</b>!
+      Mau info lainnya? Gabung grup WhatsApp kami 📢<br>
+      🔥 Promo: Promosiin server kami = <b>DAPAT RANK GRATIS</b>!
     </p>
+    <div class="rating">⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</div>
   </div>
 
 </div>
+</div>
 
 <script>
-function toggleMenu(){
-  document.getElementById("sidebar").classList.toggle("active");
-}
+// LOADING AWAL 8 DETIK
+setTimeout(()=>{
+  document.getElementById("loading").style.display="none";
+  document.getElementById("dashboardContent").style.display="block";
+},8000);
 
-const mc=localStorage.getItem("mcName");
-if(mc){document.getElementById("user").innerText=mc;}
-
-function logout(){
-  localStorage.clear();
-  location.href="index.html";
-}
+// SIDEBAR
+function toggleMenu(){document.getElementById("sidebar").classList.toggle("active");}
 
 // JAM
 const clockEl=document.getElementById("clock");
@@ -192,7 +163,45 @@ fetch("https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&m
     <li>Maghrib: ${t.Maghrib}</li>
     <li>Isya: ${t.Isha}</li>`;
 });
+
+// LOGIN DATA
+const mc=localStorage.getItem("mcName");
+if(mc){document.getElementById("user").innerText=mc;}
+function logout(){localStorage.clear(); location.href="index.html";}
+
+// MENU LOADING ANIMATION PROGRESS
+function loadMenu(url){
+  const menuLoading=document.getElementById("menuLoading");
+  const progress=document.getElementById("progressBar");
+  menuLoading.style.display="flex";
+  let width=0;
+  const interval=setInterval(()=>{
+    width+=1; // perlahan
+    progress.style.width=width+"%";
+    if(width>=100){
+      clearInterval(interval);
+      window.location.href=url;
+    }
+  },20); // total 2 detik
+}
+
+// ALERT SYSTEM
+function showAlert(type,text){
+  const alertError=document.getElementById("alertError");
+  const alertSuccess=document.getElementById("alertSuccess");
+  if(type==="error"){
+    alertError.innerText=text; // tetap bahasa Inggris
+    alertError.style.display="block";
+    alertError.classList.add("shake");
+    setTimeout(()=>{alertError.style.display="none";},3000);
+  }else if(type==="success"){
+    alertSuccess.innerText=text;
+    alertSuccess.style.display="block";
+    alertSuccess.classList.add("active");
+    setTimeout(()=>{alertSuccess.style.display="none";},3000);
+  }
+}
 </script>
 
 </body>
-    </html>
+  </html>
