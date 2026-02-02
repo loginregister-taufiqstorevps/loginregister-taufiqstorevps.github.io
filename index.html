@@ -1,208 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - KLITIK CRAFT</title>
-
-<link rel="icon" type="image/jpeg" href="foto.jpg?v=1">
-
+<link rel="icon" type="image/jpeg" href="foto.jpg">
+<!-- Google reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{
-  margin:0;
-  background:#f5f5f5;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
-:root{--gold:#d4af37}
-
-.login-box{
-  width:90%;
-  max-width:400px;
-  background:#fff;
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.1);
-  padding:20px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-}
-
-.banner img{
-  width:100%;
-  max-height:140px;
-  border-radius:12px;
-  object-fit:cover;
-  margin-bottom:15px;
-}
-
-.login-box h2{
-  margin:10px 0 20px;
-  color:var(--gold);
-}
-
-.login-box input{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
-  font-size:16px;
-  transition: all 0.2s;
-}
-
-.login-box button{
-  width:100%;
-  padding:12px;
-  background:var(--gold);
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  margin-top:12px;
-  cursor:pointer;
-}
-
-.login-box button:hover{
-  opacity:0.9;
-}
-
-/* ALERT SYSTEM */
-.alert{
-  display:none;
-  font-size:14px;
-  margin-top:8px;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid transparent;
-  animation:none;
-}
-
-.alert.error{
-  background:#f8d7da;
-  color:#721c24;
-  border-color:#f5c6cb;
-}
-
-.alert.success{
-  background:#d4edda;
-  color:#155724;
-  border-color:#c3e6cb;
-}
-
-.alert.shake{
-  animation: shake 0.3s;
-}
-
-@keyframes shake{
-  0%{transform:translateX(0);}
-  25%{transform:translateX(-6px);}
-  50%{transform:translateX(6px);}
-  75%{transform:translateX(-6px);}
-  100%{transform:translateX(0);}
-}
-
-.successMsg{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  font-weight:bold;
-  font-size:18px;
-  opacity:0;
-  transform:scale(0.5);
-  transition: all 0.5s ease;
-}
-
-.successMsg.active{
-  opacity:1;
-  transform:scale(1);
-}
-
-.footer{
-  margin-top:15px;
-  font-size:12px;
-  color:#777;
-}
+*{box-sizing:border-box;font-family:Arial,sans-serif;margin:0;padding:0}
+body, html{height:100%;background:#fff;display:flex;justify-content:center;align-items:center}
+.container{width:90%;max-width:400px;background:#fff;padding:25px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.2);text-align:center;position:relative}
+h2{color:#d4af37;margin-bottom:15px}
+input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:8px;font-size:16px}
+.btn-submit{width:100%;padding:12px;background:#d4af37;color:#fff;border:none;border-radius:10px;font-size:16px;cursor:pointer;transition:0.3s}
+.btn-submit:hover{box-shadow:0 0 10px #d4af37}
+.alert{display:none;padding:10px;background:#f8d7da;color:#721c24;border-radius:8px;margin-top:10px;animation:none}
+.alert.shake{animation:shake 0.3s}
+@keyframes shake{0%{transform:translateX(0);}25%{transform:translateX(-6px);}50%{transform:translateX(6px);}75%{transform:translateX(-6px);}100%{transform:translateX(0);}}
+.banner{margin-bottom:15px}
+.banner img{width:100%;max-height:100px;object-fit:cover;border-radius:10px}
+.successMsg{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:bold;font-size:18px;opacity:0;transform:scale(0.5);transition: all 0.5s ease}
+.successMsg.active{opacity:1;transform:scale(1)}
 </style>
 </head>
 <body>
 
-<div class="login-box">
-
+<div class="container">
   <div class="banner">
-    <img src="banner.jpg" alt="KLITIK CRAFT">
+    <img src="banner.jpg" alt="Banner KLITIK CRAFT">
   </div>
-
   <h2>Login KLITIK CRAFT</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="text" id="mcName" placeholder="Nama Minecraft">
+  <input type="text" id="whatsapp" placeholder="Nomor WhatsApp (+62...)">
+  <input type="password" id="password" placeholder="Password">
 
-  <form id="loginForm">
-    <input type="text" id="mcName" placeholder="Minecraft Name" required>
-    <input type="text" id="waNumber" placeholder="WhatsApp Number (+62)" required>
+  <!-- Google reCAPTCHA -->
+  <div class="g-recaptcha" data-sitekey="6Le8p10sAAAAAGVfiorLUF-FAI6ujEA8F2MfCbpZ" style="margin:10px 0;"></div>
 
-    <div class="alert error" id="alertError">Something is wrong! Check again.</div>
-    <div class="successMsg" id="alertSuccess">✅ Login Success!</div>
+  <button class="btn-submit" onclick="login()">Submit</button>
 
-    <button type="submit">Login</button>
-  </form>
-
-  <div class="footer">
-    Don't have an account? <a href="register.html" style="color:var(--gold); font-weight:bold;">Register here</a><br>
-    KLITIK CRAFT © 2026
-  </div>
-
+  <!-- Alert dan Success -->
+  <div class="alert" id="alertBox">Error</div>
+  <div class="successMsg" id="successBox">✅ Login Success!</div>
 </div>
 
 <script>
-document.getElementById("loginForm").addEventListener("submit", function(e){
-  e.preventDefault();
+// ALERT CUSTOM
+function showAlert(msg){
+  const a=document.getElementById("alertBox");
+  a.innerText=msg;
+  a.style.display="block";
+  a.classList.add("shake");
+  setTimeout(()=>{a.style.display="none";a.classList.remove("shake");},3000);
+}
 
-  const mc = document.getElementById("mcName").value.trim();
-  let wa = document.getElementById("waNumber").value.trim();
-  const alertError = document.getElementById("alertError");
-  const alertSuccess = document.getElementById("alertSuccess");
+// SUCCESS ANIMASI
+function showSuccess(msg){
+  const s=document.getElementById("successBox");
+  s.innerText="✅ "+msg;
+  s.style.display="flex";
+  s.classList.add("active");
+  setTimeout(()=>{s.style.display="none";s.classList.remove("active");},1500);
+}
 
-  alertError.style.display="none";
-  alertError.classList.remove("shake");
-  alertSuccess.classList.remove("active");
-
-  // CHECK FIELDS
-  if(!mc || !wa){
-    alertError.style.display="block";
-    alertError.innerText="Something is wrong! Check again.";
-    alertError.classList.add("shake");
+// LOGIN FUNCTION
+function login(){
+  const email=document.getElementById("email").value.trim();
+  const mc=document.getElementById("mcName").value.trim();
+  const wa=document.getElementById("whatsapp").value.trim();
+  const pass=document.getElementById("password").value.trim();
+  
+  if(!email || !mc || !wa || !pass){
+    showAlert("Kamu ada yang salah nih, coba cek lagi!");
     return;
   }
 
-  // WA validation +62
-  if(!wa.startsWith("+62") || !/^\+62\d{8,15}$/.test(wa)){
-    alertError.style.display="block";
-    alertError.innerText="WhatsApp number must be valid (+62)!";
-    alertError.classList.add("shake");
+  // VALIDASI EMAIL
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+  if(!emailPattern.test(email)){
+    showAlert("Email tidak valid!");
     return;
   }
 
-  // CHECK REGISTERED USER
-  let users = JSON.parse(localStorage.getItem("users") || "[]");
-  let user = users.find(u => u.mc === mc);
-
-  if(!user){
-    alertError.style.display="block";
-    alertError.innerText="User not registered!";
-    alertError.classList.add("shake");
+  // VALIDASI WHATSAPP
+  const waPattern = /^\+62[0-9]{8,14}$/;
+  if(!waPattern.test(wa)){
+    showAlert("Nomor WhatsApp tidak valid! Harus mulai +62 dan hanya angka.");
     return;
   }
 
-  // LOGIN SUCCESS
+  // VALIDASI RECAPTCHA
+  const recaptcha = grecaptcha.getResponse();
+  if(recaptcha.length === 0){
+    showAlert("Silakan centang reCAPTCHA untuk melanjutkan!");
+    return;
+  }
+
+  // Simpan sementara
+  localStorage.setItem("email", email);
   localStorage.setItem("mcName", mc);
-  localStorage.setItem("waNumber", wa);
+  localStorage.setItem("whatsapp", wa);
+  localStorage.setItem("password", pass);
 
-  alertSuccess.classList.add("active");
-  setTimeout(()=>{ location.href="dashboard.html"; },1200);
-});
+  // ANIMASI SUKSES
+  showSuccess("Login Success");
+
+  // Loading dashboard 2 detik
+  setTimeout(()=>{
+    window.location.href="dashboard.html";
+  },1500);
+}
 </script>
 
 </body>
