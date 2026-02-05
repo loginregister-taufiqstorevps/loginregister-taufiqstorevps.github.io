@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLITIK CRAFT</title>
+
+<!-- ICON CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{
+  margin:0;
+  min-height:100vh;
+  background:url("banner.jpg") center/cover no-repeat fixed;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.overlay{
+  background:rgba(0,0,0,.55);
+  position:fixed;
+  inset:0;
+}
+
+.container{
+  position:relative;
+  z-index:2;
+  width:90%;
+  max-width:420px;
+  text-align:center;
+  color:#fff;
+}
+
+.logo{
+  margin-bottom:20px;
+}
+.logo h1{
+  margin:10px 0 0;
+  letter-spacing:2px;
+}
+
+.btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:14px;
+  margin:10px 0;
+  border-radius:12px;
+  font-weight:bold;
+  color:#fff;
+  text-decoration:none;
+}
+
+.discord{background:#5865F2}
+.whatsapp{background:#25D366}
+.status{background:#f59e0b}
+.vote{background:#22c55e}
+.store{background:#ef4444}
+
+.server-status{
+  margin-top:20px;
+  padding:15px;
+  border-radius:12px;
+  font-weight:bold;
+}
+
+.online{background:#16a34a}
+.offline{background:#dc2626}
+.maintenance{background:#facc15;color:#000}
+
+.ip{
+  margin-top:8px;
+  font-weight:bold;
+  color:#facc15;
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<div class="container">
+
+  <div class="logo">
+    <i class="fa-solid fa-cube fa-3x"></i>
+    <h1>KLITIK CRAFT</h1>
+  </div>
+
+  <a class="btn discord" href="#">
+    <i class="fa-brands fa-discord"></i> Discord
+  </a>
+
+  <a class="btn whatsapp" href="#">
+    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+  </a>
+
+  <a class="btn status" href="#">
+    <i class="fa-solid fa-signal"></i> Status Page
+  </a>
+
+  <a class="btn vote" href="#">
+    <i class="fa-solid fa-check"></i> Vote
+  </a>
+
+  <a class="btn store" href="#">
+    <i class="fa-solid fa-store"></i> Store (Soon)
+  </a>
+
+  <!-- STATUS SERVER -->
+  <div id="serverStatus" class="server-status">
+    <i class="fa-solid fa-circle-notch fa-spin"></i> Checking server...
+  </div>
+
+  <div class="ip">
+    play.klitikcraft.my.id
+  </div>
+
+</div>
+
+<script>
+// ==========================
+// KONFIG
+// ==========================
+const serverIP = "play.klitikcraft.my.id";
+const maintenance = false; // true = maintenance manual
+
+// ==========================
+// STATUS SERVER
+// ==========================
+const statusBox = document.getElementById("serverStatus");
+
+if(maintenance){
+  statusBox.className = "server-status maintenance";
+  statusBox.innerHTML = "🛠 Server Maintenance";
+}else{
+  fetch(`https://api.mcstatus.io/v2/status/java/${serverIP}`)
+  .then(res => res.json())
+  .then(data => {
+    if(data.online){
+      statusBox.className = "server-status online";
+      statusBox.innerHTML = "🟢 Server Online";
+    }else{
+      statusBox.className = "server-status offline";
+      statusBox.innerHTML = "🔴 Server Offline";
+    }
+  })
+  .catch(()=>{
+    statusBox.className = "server-status offline";
+    statusBox.innerHTML = "⚠️ Cannot reach server";
+  });
+}
+</script>
+
+</body>
+</html>
