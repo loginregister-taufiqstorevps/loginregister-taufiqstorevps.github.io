@@ -5,108 +5,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Console - KLITIK CRAFT</title>
 <style>
-body, html{margin:0;padding:0;height:100%;font-family:Consolas,monospace;background:#0a0a0a;color:#fff;overflow:hidden}
-:root{--neon-purple:#9b59b6;--neon-cyan:#00ffff;--btn-bg:#333;--btn-hover:#555;}
-header{background:linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));padding:12px;font-size:20px;font-weight:bold;text-align:center}
-#terminal{background:#111;color:#0f0;padding:10px;height:70%;overflow-y:auto;font-size:14px;border-top:2px solid var(--neon-purple);}
-#cmdInput{width:100%;padding:10px;background:#222;border:none;color:#0f0;font-size:14px;outline:none;border-top:2px solid var(--neon-cyan);}
-#buttons{display:flex;gap:8px;padding:10px;background:#111;border-top:2px solid var(--neon-purple);}
-.btn{padding:8px 12px;background:var(--btn-bg);border:none;color:#fff;border-radius:6px;cursor:pointer;}
-.btn:hover{background:var(--btn-hover);}
-#serverStatus{font-weight:bold;}
+body, html{margin:0;padding:0;height:100%;background:#2a0050;color:#0ff;font-family:monospace;overflow:hidden}
+#consoleWrap{display:flex;height:100%}
+#sidebar{width:220px;background:#3a0070;display:flex;flex-direction:column;padding:10px;gap:10px}
+#sidebar button{padding:10px;background:#5a00a0;color:#fff;border:none;border-radius:6px;cursor:pointer}
+#terminal{flex:1;background:#1b001f;padding:10px;overflow-y:auto;display:flex;flex-direction:column-reverse}
+#inputWrap{position:fixed;bottom:0;width:100%;display:flex}
+#cmdInput{flex:1;padding:10px;background:#111;color:#0ff;border:none;font-family:monospace;font-size:16px}
+#cmdBtn{padding:10px;background:#5a00a0;color:#fff;border:none;cursor:pointer}
+.logEntry{padding:2px 0}
+.logSuccess{color:#0f0}
+.logError{color:#f00}
 </style>
 </head>
 <body>
 
-<header>KLITIK CRAFT CONSOLE</header>
+<div id="consoleWrap">
+  <div id="sidebar">
+    <button onclick="serverToggle()">Matikan/Online Server Web</button>
+    <button onclick="commandExample('/give rank taufiqdevelop owner')">Command Example</button>
+  </div>
+  <div id="terminal"></div>
+</div>
 
-<div id="terminal"></div>
-
-<input type="text" id="cmdInput" placeholder="Ketik command di sini..." autofocus>
-
-<div id="buttons">
-  <button class="btn" onclick="toggleServer()">Matikan / Online-kan Server Web</button>
-  <span id="serverStatus">Status: ONLINE</span>
+<div id="inputWrap">
+  <input id="cmdInput" placeholder="Masukan command..." onkeydown="if(event.key==='Enter'){runCommand();}">
+  <button id="cmdBtn" onclick="runCommand()">Run</button>
 </div>
 
 <script>
-// ----------------- UTILITY -----------------
-const terminal = document.getElementById("terminal");
-let serverOnline = true;
+const terminal=document.getElementById("terminal");
+let serverOnline=true;
+const users={};
 
-// Ambil logs dari localStorage
-function loadLogs(){
-  const logs = JSON.parse(localStorage.getItem("consoleLogs")||"[]");
-  terminal.innerHTML = logs.map(l=>`> ${l}`).join("<br>");
-  terminal.scrollTop = terminal.scrollHeight;
+// Fungsi log
+function log(msg,type){const e=document.createElement("div");e.className="logEntry "+(type==="error"?"logError":type==="success"?"logSuccess":"");e.innerText=msg;terminal.prepend(e);}
+
+// Toggle server web
+function serverToggle(){
+  serverOnline=!serverOnline;
+  log("Server Web sekarang "+(serverOnline?"ONLINE":"MAINTENANCE"),"success");
+  localStorage.setItem("serverOnline",serverOnline?"1":"0");
 }
 
-// Tambah log baru
-function addLog(text){
-  let logs = JSON.parse(localStorage.getItem("consoleLogs")||"[]");
-  logs.push(text);
-  localStorage.setItem("consoleLogs", JSON.stringify(logs));
-  loadLogs();
-}
+// Command example
+function commandExample(cmd){log("Command dijalankan: "+cmd,"success");}
 
-// ----------------- SERVER BUTTON -----------------
-function toggleServer(){
-  const role = localStorage.getItem("role")||"user";
-  if(role!=="developer"){ addLog("Hanya developer yang bisa matikan/online-kan server"); return;}
-  serverOnline = !serverOnline;
-  document.getElementById("serverStatus").innerText = "Status: "+(serverOnline?"ONLINE":"MAINTENANCE");
-  addLog(`Server Web ${serverOnline?"diaktifkan":"dimatikan oleh developer"}`);
-  // Matikan dashboard
-  localStorage.setItem("serverStatus", serverOnline?"online":"maintenance");
-}
+// Run input command
+function runCommand(){
+  const val=document.getElementById("cmdInput").value.trim();
+  if(!val){return;}
+  log(">> "+val,"success");
+  document.getElementById("cmdInput").value="";
 
-// ----------------- COMMAND TERMINAL -----------------
-const input = document.getElementById("cmdInput");
-input.addEventListener("keydown", e=>{
-  if(e.key==="Enter"){
-    const role = localStorage.getItem("role")||"user";
-    const user = localStorage.getItem("mcName")||"USER";
-    const val = input.value.trim();
-    if(!val) return;
-    addLog(`> ${val}`);
-    if(val.startsWith("/give rank")){
-      if(role!=="developer" && role!=="owner"){ addLog("Hanya owner/developer bisa memberi rank");}
-      else{
-        const target = val.replace("/give rank","").trim();
-        if(target) addLog(`Rank OWNER diberikan ke ${target} oleh ${user}`);
-        else addLog("Format: /give rank {username}");
-      }
-    }else if(val==="/clear"){
-      localStorage.setItem("consoleLogs","[]");
-      terminal.innerHTML="";
-    }else if(val==="/help"){
-      addLog("Command Tersedia:");
-      addLog("/give rank {username} - Berikan rank OWNER");
-      addLog("/clear - Bersihkan terminal");
-      addLog("/help - Tampilkan command");
-      addLog("/status - Tampilkan status server web");
-    }else if(val==="/status"){
-      addLog("Server Web: "+(serverOnline?"ONLINE":"MAINTENANCE"));
-    }else{
-      addLog("Command tidak dikenali. Ketik /help untuk bantuan.");
-    }
-    input.value="";
+  const args=val.split(" ");
+  const cmd=args[0].toLowerCase();
+
+  if(cmd===".adduser"){
+    const key=Math.random().toString(36).substring(2,10).toUpperCase();
+    const user=args[1]||"unknown";
+    users[user]={key:key,role:"user",limit:1};
+    log("User "+user+" dibuat dengan key: "+key,"success");
   }
-});
-
-// ----------------- LOAD LOGS -----------------
-loadLogs();
-
-// ----------------- AUTO LOG DARI DASHBOARD -----------------
-setInterval(()=>{ loadLogs(); },2000);
-
-// ----------------- CEK SERVER STATUS DASHBOARD -----------------
-setInterval(()=>{
-  const status = localStorage.getItem("serverStatus")||"online";
-  if(status==="maintenance") terminal.style.background="#220022";
-  else terminal.style.background="#111";
-},1000);
-
+  else if(cmd===".addusername"){
+    const name=args[1]; const key=args[2];
+    if(!name||!key){log("Syntax salah!","error");return;}
+    let found=false;
+    for(const u in users){if(users[u].key===key){users[u].name=name;found=true;log("User "+name+" terdaftar dengan key "+key,"success");break;}}
+    if(!found){log("Key tidak ditemukan!","error");}
+  }
+  else if(cmd===".change" && args[1]==="role"){
+    const name=args[2]; const rank=args[3];
+    if(users[name]){users[name].role=rank; log("Role "+rank+" diberikan ke "+name,"success");}
+    else{log("User tidak ditemukan!","error");}
+  }
+  else if(cmd===".settings" && args[1]==="roles" && args[2]==="dashboard"){
+    const ranks=args[3]; log("Akses dashboard untuk rank "+ranks+" diubah","success");
+  }
+  else if(cmd===".addlimit"){
+    const rank=args[1]; const limit=args[2];
+    log("Limit untuk rank "+rank+" diubah menjadi "+limit,"success");
+  }
+  else{
+    log("Command tidak dikenal","error");
+  }
+}
 </script>
 
 </body>
