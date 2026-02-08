@@ -7,7 +7,7 @@
 <link rel="icon" type="image/jpeg" href="foto.jpg?v=1">
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif;margin:0;padding:0}
-:root{--gold:#d4af37}
+:root{--gold:#d4af37;--blue:#3399ff;--gray:#aaa}
 body, html{height:100%;background:#fff}
 
 /* LOADING AWAL */
@@ -36,6 +36,14 @@ body, html{height:100%;background:#fff}
 
 /* CARD */
 .card{background:#fff;border:1px solid #eee;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+
+/* USER ROLE */
+.user-role{font-weight:bold;margin-bottom:6px;padding:6px 10px;border-radius:8px;display:inline-block;color:#fff}
+
+/* ROLE COLORS */
+.role-user{background:var(--gray);}
+.role-owner{background:var(--gold);}
+.role-developer{background:var(--blue);}
 
 /* SHOLAT */
 .sholat{background:#f9f9f9;border-radius:12px;padding:15px;margin-bottom:15px}
@@ -86,12 +94,12 @@ body, html{height:100%;background:#fff}
 
 <div class="sidebar" id="sidebar">
   <img src="foto.jpg">
-  <a onclick="loadMenu('ranks.html')">Ranks</a>
-  <a onclick="loadMenu('money.html')">Money</a>
-  <a onclick="loadMenu('skill.html')">Skill</a>
-  <a onclick="loadMenu('shard.html')">Shard</a>
-  <a onclick="loadMenu('invoice.html')">Invoice</a>
-  <a onclick="loadMenu('contact.html')">Hubungi Developer</a>
+  <a onclick="menuClick('Ranks','ranks.html')">Ranks</a>
+  <a onclick="menuClick('Money','money.html')">Money</a>
+  <a onclick="menuClick('Skill','skill.html')">Skill</a>
+  <a onclick="menuClick('Shard','shard.html')">Shard</a>
+  <a onclick="menuClick('Invoice','invoice.html')">Invoice</a>
+  <a onclick="menuClick('Hubungi Developer','contact.html')">Hubungi Developer</a>
   <button class="back-btn" onclick="toggleMenu()">⬅ Kembali</button>
 </div>
 
@@ -104,6 +112,7 @@ body, html{height:100%;background:#fff}
   </div>
 
   <div class="card">
+    <div class="user-role" id="roleDisplay">Role: USER</div> <!-- Role -->
     <h3>HALLO <span id="user">USER</span></h3>
     <p>
       Selamat datang di <b>KLITIK CRAFT</b>! Klik menu ☰ di kiri untuk order ranks atau fitur lainnya. Diskon kadang tersedia 🔥
@@ -131,7 +140,7 @@ body, html{height:100%;background:#fff}
 </div>
 
 <script>
-// LOADING AWAL 8 DETIK
+// LOADING AWAL
 setTimeout(()=>{
   document.getElementById("loading").style.display="none";
   document.getElementById("dashboardContent").style.display="block";
@@ -166,23 +175,40 @@ fetch("https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&m
 
 // LOGIN DATA
 const mc=localStorage.getItem("mcName");
-if(mc){document.getElementById("user").innerText=mc;}
+const role = localStorage.getItem("role") || "user";
+document.getElementById("user").innerText = mc || "USER";
+
+// Role display
+const roleDisplay=document.getElementById("roleDisplay");
+roleDisplay.innerText="Role: "+role.toUpperCase();
+roleDisplay.classList.remove("role-user","role-owner","role-developer");
+if(role==="user"){roleDisplay.classList.add("role-user");}
+else if(role==="owner"){roleDisplay.classList.add("role-owner");}
+else if(role==="developer"){roleDisplay.classList.add("role-developer");}
+
 function logout(){localStorage.clear(); location.href="index.html";}
 
-// MENU LOADING ANIMATION PROGRESS
-function loadMenu(url){
+// MENU LOADING + LOG
+function menuClick(name,url){
+  toggleMenu();
+  // Log activity ke console
+  const user = localStorage.getItem("mcName")||"USER";
+  let logs = JSON.parse(localStorage.getItem("consoleLogs")||"[]");
+  logs.push(`${user} sedang mengeclick tombol ${name}`);
+  localStorage.setItem("consoleLogs", JSON.stringify(logs));
+  // Load menu
   const menuLoading=document.getElementById("menuLoading");
   const progress=document.getElementById("progressBar");
   menuLoading.style.display="flex";
   let width=0;
   const interval=setInterval(()=>{
-    width+=1; // perlahan
+    width+=1;
     progress.style.width=width+"%";
     if(width>=100){
       clearInterval(interval);
       window.location.href=url;
     }
-  },20); // total 2 detik
+  },20);
 }
 
 // ALERT SYSTEM
@@ -190,7 +216,7 @@ function showAlert(type,text){
   const alertError=document.getElementById("alertError");
   const alertSuccess=document.getElementById("alertSuccess");
   if(type==="error"){
-    alertError.innerText=text; // tetap bahasa Inggris
+    alertError.innerText=text;
     alertError.style.display="block";
     alertError.classList.add("shake");
     setTimeout(()=>{alertError.style.display="none";},3000);
