@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Console - KLITIK CRAFT</title>
+<style>
+body{background:#111;color:#fff;font-family:Arial,sans-serif;margin:0;padding:0;display:flex;justify-content:center;align-items:center;height:100vh}
+.container{background:#222;padding:30px;border-radius:12px;width:320px;text-align:center}
+input{width:80%;padding:10px;margin:10px 0;border-radius:8px;border:none;font-size:16px}
+button{width:85%;padding:10px;margin-top:10px;border:none;border-radius:8px;background:#d4af37;color:#111;font-weight:bold;cursor:pointer}
+.alert{display:none;margin-top:10px;color:#ff5555;font-weight:bold}
+.success{color:#55ff55}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Login Console</h2>
+  <input type="text" id="username" placeholder="Username"><br>
+  <input type="text" id="key" placeholder="Key"><br>
+  <button onclick="login()">Login</button>
+  <div class="alert" id="alert"></div>
+</div>
+
+<script>
+// Ambil data consoleUsers
+const users = JSON.parse(localStorage.getItem("consoleUsers")||"{}");
+
+function login(){
+  const uname = document.getElementById("username").value.trim();
+  const ukey = document.getElementById("key").value.trim();
+  const alertEl = document.getElementById("alert");
+
+  if(!uname || !ukey){ 
+    alertEl.innerText="Isi semua field!"; 
+    alertEl.className="alert"; 
+    alertEl.style.display="block"; 
+    return;
+  }
+
+  if(users[uname] && users[uname].key === ukey){
+    // Login sukses
+    alertEl.innerText="Login berhasil!";
+    alertEl.className="alert success";
+    alertEl.style.display="block";
+    localStorage.setItem("consoleLogged", uname); // simpan user login
+    setTimeout(()=>{window.location.href="console.html";},1000);
+  } else {
+    alertEl.innerText="Username atau Key salah!";
+    alertEl.className="alert";
+    alertEl.style.display="block";
+  }
+}
+</script>
+
+</body>
+</html>
