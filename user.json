@@ -1,0 +1,14 @@
+{
+  "OwnerGuy": {
+    "role": "owner",
+    "lastLogin": "2026-02-09T19:12:34.567Z"
+  },
+  "Admin01": {
+    "role": "admin",
+    "lastLogin": "2026-02-09T18:50:22.123Z"
+  },
+  "USER123": {
+    "role": "user",
+    "lastLogin": "2026-02-09T17:44:10.000Z"
+  }
+}
