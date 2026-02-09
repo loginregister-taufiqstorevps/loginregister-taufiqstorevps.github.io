@@ -3,147 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLITIK CRAFT - Console</title>
+<title>Console - KLITIK CRAFT</title>
 <style>
-body, html{
-  margin:0; padding:0;
-  height:100%; width:100%;
-  background: #0d0d0d;
-  font-family: monospace;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#fff;
-}
-
-/* Console Box */
-.console-box{
-  width: 90%;
-  max-width: 800px;
-  height: 600px;
-  background: linear-gradient(135deg, #4b0082, #000000);
-  border: 2px solid #8a2be2;
-  border-radius: 12px;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  box-shadow: 0 0 20px #8a2be2;
-}
-
-/* Header */
-.console-header{
-  padding:10px;
-  background:#8a2be2;
-  font-weight:bold;
-  text-align:center;
-  font-size:18px;
-  border-bottom:2px solid #4b0082;
-}
-
-/* Terminal */
-.terminal{
-  flex:1;
-  padding:10px;
-  overflow-y:auto;
-  background:#0a0a0a;
-  font-size:14px;
-  line-height:1.4;
-}
-
-/* Input */
-.input-area{
-  display:flex;
-  border-top:2px solid #4b0082;
-}
-
-.input-area input{
-  flex:1;
-  padding:8px;
-  border:none;
-  outline:none;
-  font-family: monospace;
-  font-size:14px;
-  background:#111;
-  color:#fff;
-}
-
-.input-area button{
-  padding:8px 12px;
-  border:none;
-  background:#8a2be2;
-  color:#fff;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.input-area button:hover{
-  background:#4b0082;
-}
-
-/* Auto command text style */
-.auto-command{
-  color:#00ffcc;
-}
+body{background:#111;color:#fff;font-family:Arial,sans-serif;margin:0;padding:0}
+.container{padding:20px;}
+input, button{padding:8px;margin:5px;border-radius:6px;border:none;font-size:16px}
+input{width:200px}
+button{background:#d4af37;color:#111;font-weight:bold;cursor:pointer}
+#terminal{background:#222;color:#0f0;padding:10px;margin-top:10px;height:300px;overflow-y:auto;border-radius:8px;font-family:monospace;}
 </style>
 </head>
 <body>
 
-<div class="console-box">
-  <div class="console-header">KLITIK CRAFT CONSOLE</div>
-  <div class="terminal" id="terminal">
-    <div class="auto-command">System initialized...</div>
-  </div>
-  <div class="input-area">
-    <input type="text" id="commandInput" placeholder="Ketik command di sini...">
-    <button onclick="runCommand()">Run</button>
-  </div>
+<div class="container">
+  <h2>Console KLITIK CRAFT</h2>
+  <input type="text" id="cmdInput" placeholder="Ketik command..." />
+  <button onclick="runCommand()">Execute</button>
+  <div id="terminal"></div>
 </div>
 
 <script>
-const terminal = document.getElementById("terminal");
-
-// Fungsi untuk scroll ke bawah
-function scrollTerminal(){
-  terminal.scrollTop = terminal.scrollHeight;
+// Inisialisasi console users
+if(!localStorage.getItem("consoleUsers")){
+  const consoleUsers = {
+    "OwnerGuy": {email:"owner@klitik.com", key:"123ABC"},
+    "Admin01": {email:"admin01@klitik.com", key:"456DEF"}
+  };
+  localStorage.setItem("consoleUsers", JSON.stringify(consoleUsers));
 }
 
-// Auto-command contoh
-const autoCommands = [
-  "berhasil initialized",
-  "prosing command",
-  "installer dokcpack...",
-  " installer server", 
-  "doker package", 
-  "System ready for commands...", 
-];
+// Terminal output helper
+function log(msg){ 
+  const t = document.getElementById("terminal");
+  t.innerHTML += msg+"<br>"; 
+  t.scrollTop = t.scrollHeight;
+}
 
-let autoIndex = 0;
-setInterval(()=>{
-  const msg = document.createElement("div");
-  msg.classList.add("auto-command");
-  msg.innerText = autoCommands[autoIndex];
-  terminal.appendChild(msg);
-  scrollTerminal();
-  autoIndex = (autoIndex + 1) % autoCommands.length;
-}, 5000);
+// Generate key acak
+function generateKey(){
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let key="";
+  for(let i=0;i<6;i++){ key+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+  return key;
+}
 
-// Fungsi run command manual
+// Eksekusi command
 function runCommand(){
-  const input = document.getElementById("commandInput");
-  const cmd = input.value.trim();
-  if(cmd==="") return;
-  const msg = document.createElement("div");
-  msg.innerText = "> " + cmd;
-  terminal.appendChild(msg);
-  input.value="";
-  scrollTerminal();
+  const cmd = document.getElementById("cmdInput").value.trim();
+  if(!cmd){ return; }
+  log("> "+cmd);
 
-  // Contoh respon command
-  const resp = document.createElement("div");
-  resp.innerText = "System: Command '"+cmd+"' dijalankan.";
-  resp.style.color="#00ffcc";
-  terminal.appendChild(resp);
-  scrollTerminal();
+  const users = JSON.parse(localStorage.getItem("consoleUsers")||"{}");
+
+  // Command .addkey (username)
+  if(cmd.startsWith(".addkey ")){
+    const parts = cmd.split(" ");
+    if(parts.length<2){ log("⚠️ Usage: .addkey (username)"); return; }
+    const username = parts[1];
+    if(!users[username]){ log("⚠️ Username tidak ditemukan!"); return; }
+    const newKey = generateKey();
+    users[username].key = newKey;
+    localStorage.setItem("consoleUsers", JSON.stringify(users));
+    log(`✅ Key baru untuk ${username}: ${newKey}`);
+    return;
+  }
+
+  // Command .showusers → list semua user console
+  if(cmd===".showusers"){
+    log("📋 Daftar user console:");
+    for(const u in users){
+      log(`${u} | Email: ${users[u].email} | Key: ${users[u].key}`);
+    }
+    return;
+  }
+
+  log("⚠️ Command tidak dikenal!");
 }
 </script>
 
