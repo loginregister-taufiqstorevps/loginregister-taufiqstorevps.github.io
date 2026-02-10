@@ -2,145 +2,168 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Console • KLITIK CRAFT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLITIK CRAFT · Console</title>
 
 <style>
-*{box-sizing:border-box;font-family:monospace}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+
 body{
-  margin:0;
-  background:radial-gradient(circle at top,#3a0000,#0a0000 70%);
-  color:#ffb3b3;
+  background:radial-gradient(circle at top,#2a0000,#050000 70%);
+  color:#ffd6d6;
 }
-.login,.console{
-  max-width:420px;
-  margin:70px auto;
-  background:#120000;
-  border:1px solid #660000;
+
+/* HEADER */
+header{
+  padding:16px 20px;
+  background:rgba(0,0,0,.7);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header h1 span{color:#ff4d4d}
+
+/* CONTAINER */
+.container{padding:20px}
+
+/* CARD */
+.card{
+  background:linear-gradient(160deg,#0d0000,#2a0000);
+  border:1px solid rgba(255,77,77,.3);
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:0 0 20px rgba(255,77,77,.15);
+}
+
+/* ROLE */
+.role{
+  padding:5px 10px;
   border-radius:12px;
-  padding:20px;
+  font-size:12px;
+  font-weight:bold;
 }
-h2{color:#ff5555;text-align:center}
-input,button{
+.OWNER{background:#ff4d4d;color:#000}
+.ADMIN{background:#ff9933;color:#000}
+.DEVELOPER{background:#3399ff;color:#fff}
+.USER{background:#666;color:#fff}
+
+/* LIST */
+.user-row{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px dashed rgba(255,255,255,.15);
+  font-size:14px;
+}
+
+/* FORM */
+input,select,button{
   width:100%;
-  padding:12px;
-  margin-top:10px;
-  border-radius:8px;
+  margin-top:8px;
+  padding:10px;
+  border-radius:10px;
   border:none;
 }
-input{
-  background:#1f0000;
+input,select{
+  background:#120000;
   color:#fff;
-  border:1px solid #550000;
+  border:1px solid rgba(255,77,77,.3);
 }
 button{
-  background:linear-gradient(135deg,#ff4444,#990000);
+  background:#ff4d4d;
   font-weight:bold;
   cursor:pointer;
 }
-.box{
-  margin-top:15px;
-  background:#090000;
-  border:1px solid #440000;
-  padding:15px;
-  white-space:pre-line;
-}
-.admin-only{display:none}
+button:hover{opacity:.85}
+
+/* HIDDEN */
+.hidden{display:none}
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div class="login" id="loginBox">
-  <h2>LOGIN CONSOLE</h2>
-  <input id="email" placeholder="Email">
-  <input id="pw" type="password" placeholder="Password">
-  <button onclick="login()">LOGIN</button>
-</div>
+<header>
+  <h1><span>KLITIK</span> CRAFT · Console</h1>
+  <div id="loginInfo"></div>
+</header>
 
-<!-- CONSOLE -->
-<div class="console" id="consoleBox" style="display:none">
-  <h2>USER CONSOLE</h2>
-  <div id="myRole"></div>
+<div class="container">
 
-  <div class="box" id="listUser"></div>
+  <!-- USER LIST -->
+  <div class="card">
+    <h3>👥 User List</h3>
+    <div id="userList"></div>
+  </div>
 
-  <!-- OWNER ONLY -->
-  <div class="admin-only" id="ownerPanel">
-    <h3>➕ TAMBAH USER</h3>
-    <input id="nEmail" placeholder="Email">
-    <input id="nPw" placeholder="Password">
-    <select id="nRole">
+  <!-- ADD USER (OWNER ONLY) -->
+  <div class="card hidden" id="addUserBox">
+    <h3>➕ Tambah User</h3>
+    <input id="name" placeholder="Nama">
+    <input id="username" placeholder="Username">
+    <input id="email" placeholder="Email">
+    <input id="password" placeholder="Password">
+    <select id="role">
       <option>USER</option>
       <option>ADMIN</option>
       <option>DEVELOPER</option>
     </select>
-    <button onclick="addUser()">ADD</button>
-
-    <h3>🎨 EDIT WEB</h3>
-    <button onclick="editWeb()">EDIT BANNER / WEB</button>
+    <button onclick="addUser()">Tambah</button>
   </div>
+
 </div>
 
 <script>
-/* DATABASE USER */
+/* ================= DATABASE ================= */
 let users = JSON.parse(localStorage.getItem("users")) || [
-  {email:"hasan121@gmail.com",pw:"san75",role:"OWNER"},
-  {email:"admin123@gmail.com",pw:"admin8787",role:"ADMIN"},
-  {email:"developerSemangat@gmail.com",pw:"semangat122",role:"DEVELOPER"}
+  {name:"Hasan",username:"hasan",email:"hasan121@gmail.com",password:"san75",role:"OWNER"},
+  {name:"Admin",username:"admin",email:"admin123@gmail.com",password:"admin8787",role:"ADMIN"},
+  {name:"Developer",username:"developer",email:"developerSemangat@gmail.com",password:"semangat122",role:"DEVELOPER"}
 ];
 
-function save(){localStorage.setItem("users",JSON.stringify(users));}
+/* ================= AUTH CHECK ================= */
+const roleLogin = localStorage.getItem("role") || "USER";
+const nameLogin = localStorage.getItem("name") || "Guest";
 
-/* LOGIN SYSTEM */
-function login(){
-  const e = email.value;
-  const p = pw.value;
+document.getElementById("loginInfo").innerText =
+  nameLogin + " · " + roleLogin;
 
-  let found = users.find(u=>u.email===e && u.pw===p);
-
-  if(found){
-    localStorage.setItem("role",found.role);
-    showConsole(found.role);
-  }else{
-    // DATA TIDAK ADA → USER
-    localStorage.setItem("role","USER");
-    showConsole("USER");
-  }
+if(roleLogin === "OWNER"){
+  document.getElementById("addUserBox").classList.remove("hidden");
 }
 
-/* SHOW CONSOLE */
-function showConsole(role){
-  loginBox.style.display="none";
-  consoleBox.style.display="block";
-  myRole.innerText="ROLE ANDA: "+role;
-
-  let out="";
+/* ================= RENDER ================= */
+function render(){
+  const box = document.getElementById("userList");
+  box.innerHTML="";
   users.forEach((u,i)=>{
-    out+=`[${i+1}] ${u.email} | ${u.role}\n`;
+    box.innerHTML += `
+      <div class="user-row">
+        <div>[${i+1}] ${u.username} | ${u.email}</div>
+        <span class="role ${u.role}">${u.role}</span>
+      </div>`;
   });
-  listUser.innerText=out;
-
-  if(role==="OWNER"){
-    ownerPanel.style.display="block";
-  }
+  localStorage.setItem("users",JSON.stringify(users));
 }
+render();
 
-/* OWNER ACTION */
+/* ================= ADD USER ================= */
 function addUser(){
-  users.push({
-    email:nEmail.value,
-    pw:nPw.value,
-    role:nRole.value
-  });
-  save();
-  showConsole("OWNER");
-}
+  if(roleLogin!=="OWNER") return alert("Akses ditolak");
 
-function editWeb(){
-  alert("OWNER MODE: Bisa edit banner & web");
+  users.push({
+    name:name.value,
+    username:username.value,
+    email:email.value,
+    password:password.value,
+    role:role.value
+  });
+
+  render();
+  alert("User berhasil ditambahkan");
 }
 </script>
 
 </body>
-  </html>
+</html>
