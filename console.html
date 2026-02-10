@@ -2,84 +2,145 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Console - KLITIK CRAFT</title>
+<title>Console • KLITIK CRAFT</title>
+
 <style>
-body{background:#111;color:#fff;font-family:Arial,sans-serif;margin:0;padding:0}
-.container{padding:20px;}
-input, button{padding:8px;margin:5px;border-radius:6px;border:none;font-size:16px}
-input{width:200px}
-button{background:#d4af37;color:#111;font-weight:bold;cursor:pointer}
-#terminal{background:#222;color:#0f0;padding:10px;margin-top:10px;height:300px;overflow-y:auto;border-radius:8px;font-family:monospace;}
+*{box-sizing:border-box;font-family:monospace}
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#3a0000,#0a0000 70%);
+  color:#ffb3b3;
+}
+.login,.console{
+  max-width:420px;
+  margin:70px auto;
+  background:#120000;
+  border:1px solid #660000;
+  border-radius:12px;
+  padding:20px;
+}
+h2{color:#ff5555;text-align:center}
+input,button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:8px;
+  border:none;
+}
+input{
+  background:#1f0000;
+  color:#fff;
+  border:1px solid #550000;
+}
+button{
+  background:linear-gradient(135deg,#ff4444,#990000);
+  font-weight:bold;
+  cursor:pointer;
+}
+.box{
+  margin-top:15px;
+  background:#090000;
+  border:1px solid #440000;
+  padding:15px;
+  white-space:pre-line;
+}
+.admin-only{display:none}
 </style>
 </head>
+
 <body>
 
-<div class="container">
-  <h2>Console KLITIK CRAFT</h2>
-  <input type="text" id="cmdInput" placeholder="Ketik command..." />
-  <button onclick="runCommand()">Execute</button>
-  <div id="terminal"></div>
+<!-- LOGIN -->
+<div class="login" id="loginBox">
+  <h2>LOGIN CONSOLE</h2>
+  <input id="email" placeholder="Email">
+  <input id="pw" type="password" placeholder="Password">
+  <button onclick="login()">LOGIN</button>
+</div>
+
+<!-- CONSOLE -->
+<div class="console" id="consoleBox" style="display:none">
+  <h2>USER CONSOLE</h2>
+  <div id="myRole"></div>
+
+  <div class="box" id="listUser"></div>
+
+  <!-- OWNER ONLY -->
+  <div class="admin-only" id="ownerPanel">
+    <h3>➕ TAMBAH USER</h3>
+    <input id="nEmail" placeholder="Email">
+    <input id="nPw" placeholder="Password">
+    <select id="nRole">
+      <option>USER</option>
+      <option>ADMIN</option>
+      <option>DEVELOPER</option>
+    </select>
+    <button onclick="addUser()">ADD</button>
+
+    <h3>🎨 EDIT WEB</h3>
+    <button onclick="editWeb()">EDIT BANNER / WEB</button>
+  </div>
 </div>
 
 <script>
-// Inisialisasi console users
-if(!localStorage.getItem("consoleUsers")){
-  const consoleUsers = {
-    "OwnerGuy": {email:"owner@klitik.com", key:"123ABC"},
-    "Admin01": {email:"admin01@klitik.com", key:"456DEF"}
-  };
-  localStorage.setItem("consoleUsers", JSON.stringify(consoleUsers));
-}
+/* DATABASE USER */
+let users = JSON.parse(localStorage.getItem("users")) || [
+  {email:"hasan121@gmail.com",pw:"san75",role:"OWNER"},
+  {email:"admin123@gmail.com",pw:"admin8787",role:"ADMIN"},
+  {email:"developerSemangat@gmail.com",pw:"semangat122",role:"DEVELOPER"}
+];
 
-// Terminal output helper
-function log(msg){ 
-  const t = document.getElementById("terminal");
-  t.innerHTML += msg+"<br>"; 
-  t.scrollTop = t.scrollHeight;
-}
+function save(){localStorage.setItem("users",JSON.stringify(users));}
 
-// Generate key acak
-function generateKey(){
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let key="";
-  for(let i=0;i<6;i++){ key+=chars.charAt(Math.floor(Math.random()*chars.length)); }
-  return key;
-}
+/* LOGIN SYSTEM */
+function login(){
+  const e = email.value;
+  const p = pw.value;
 
-// Eksekusi command
-function runCommand(){
-  const cmd = document.getElementById("cmdInput").value.trim();
-  if(!cmd){ return; }
-  log("> "+cmd);
+  let found = users.find(u=>u.email===e && u.pw===p);
 
-  const users = JSON.parse(localStorage.getItem("consoleUsers")||"{}");
-
-  // Command .addkey (username)
-  if(cmd.startsWith(".addkey ")){
-    const parts = cmd.split(" ");
-    if(parts.length<2){ log("⚠️ Usage: .addkey (username)"); return; }
-    const username = parts[1];
-    if(!users[username]){ log("⚠️ Username tidak ditemukan!"); return; }
-    const newKey = generateKey();
-    users[username].key = newKey;
-    localStorage.setItem("consoleUsers", JSON.stringify(users));
-    log(`✅ Key baru untuk ${username}: ${newKey}`);
-    return;
+  if(found){
+    localStorage.setItem("role",found.role);
+    showConsole(found.role);
+  }else{
+    // DATA TIDAK ADA → USER
+    localStorage.setItem("role","USER");
+    showConsole("USER");
   }
+}
 
-  // Command .showusers → list semua user console
-  if(cmd===".showusers"){
-    log("📋 Daftar user console:");
-    for(const u in users){
-      log(`${u} | Email: ${users[u].email} | Key: ${users[u].key}`);
-    }
-    return;
+/* SHOW CONSOLE */
+function showConsole(role){
+  loginBox.style.display="none";
+  consoleBox.style.display="block";
+  myRole.innerText="ROLE ANDA: "+role;
+
+  let out="";
+  users.forEach((u,i)=>{
+    out+=`[${i+1}] ${u.email} | ${u.role}\n`;
+  });
+  listUser.innerText=out;
+
+  if(role==="OWNER"){
+    ownerPanel.style.display="block";
   }
+}
 
-  log("⚠️ Command tidak dikenal!");
+/* OWNER ACTION */
+function addUser(){
+  users.push({
+    email:nEmail.value,
+    pw:nPw.value,
+    role:nRole.value
+  });
+  save();
+  showConsole("OWNER");
+}
+
+function editWeb(){
+  alert("OWNER MODE: Bisa edit banner & web");
 }
 </script>
 
 </body>
-</html>
+  </html>
