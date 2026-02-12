@@ -1,256 +1,258 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - KLITIK CRAFT</title>
-<link rel="icon" type="image/jpeg" href="foto.jpg?v=1">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="/logo.jpg" />
+<link rel="apple-touch-icon" href="foto.jpg" />
+
+<!-- Primary Meta Tags -->
+<title>Klitik Craft - Premium Minecraft Server Indonesia</title>
+<meta name="title" content="Klitik Craft - Premium Minecraft Server Indonesia" />
+<meta name="description" content="Server Minecraft terbaik di Indonesia dengan berbagai game mode. Bergabunglah dengan komunitas Klitik Craft sekarang!" />
+<meta name="keywords" content="minecraft server, minecraft indonesia, klitik craft, survival server, creative server" />
+<meta name="author" content="Klitik Craft" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="Indonesian" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://klitikcraft.my.id/" />
+<meta property="og:title" content="Klitik Craft - Premium Minecraft Server Indonesia" />
+<meta property="og:description" content="Server Minecraft terbaik di Indonesia dengan berbagai game mode. Bergabunglah dengan komunitas Klitik Craft sekarang!" />
+<meta property="og:image" content="https://klitikcraft.my.id/logo.png" />
+<meta property="og:site_name" content="Klitik Craft" />
+<meta property="og:locale" content="id_ID" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://klitikcraft.my.id/" />
+<meta property="twitter:title" content="Klitik Craft - Premium Minecraft Server Indonesia" />
+<meta property="twitter:description" content="Server Minecraft terbaik di Indonesia dengan berbagai game mode. Bergabunglah dengan komunitas Klitik Craft sekarang!" />
+<meta property="twitter:image" content="https://klitikcraft.my.id/logo.png" />
+
+<!-- Additional SEO Tags -->
+<meta name="theme-color" content="#8b5cf6" />
+<meta name="msapplication-TileColor" content="#8b5cf6" />
+<meta name="msapplication-TileImage" content="/logo.png" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://klitikcraft.my.id/" />
+
+<!-- Structured Data / JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Klitik Craft",
+  "description": "Premium Minecraft Server Indonesia",
+  "url": "https://klitikcraft.my.id",
+  "logo": "https://klitikcraft.my.id/logo.png",
+  "sameAs": [
+    "https://discord.gg/ISI_SENDIRI"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "Customer Support",
+    "availableLanguage": ["Indonesian","English"]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Klitik Craft",
+  "url": "https://klitikcraft.my.id",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://klitikcraft.my.id/store?search={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "GameServer",
+  "name": "Klitik Craft Minecraft Server",
+  "description": "Server Minecraft terbaik di Indonesia dengan berbagai game mode",
+  "game": {
+    "@type": "VideoGame",
+    "name": "Minecraft",
+    "gamePlatform": "PC"
+  },
+  "numberOfPlayers": {
+    "@type": "QuantitativeValue",
+    "value": "850+"
+  }
+}
+</script>
+
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif;margin:0;padding:0}
-:root{--gold:#d4af37;--blue:#3399ff;--gray:#aaa}
-body, html{height:100%;background:#fff}
-
-/* LOADING AWAL */
-#loading{display:flex;justify-content:center;align-items:center;position:fixed;width:100%;height:100%;font-size:28px;font-weight:bold;background:#111;color:#fff;z-index:10000}
-
-/* DASHBOARD CONTENT */
-#dashboardContent{display:none;}
-
-/* MENU */
-.menu-btn{position:fixed;top:15px;left:15px;font-size:22px;background:var(--gold);color:#fff;border:none;border-radius:8px;padding:6px 10px;z-index:1001}
-.sidebar{position:fixed;top:0;left:-260px;width:260px;height:100%;background:#fff;box-shadow:2px 0 10px rgba(0,0,0,.15);transition:.3s;z-index:1000;display:flex;flex-direction:column}
-.sidebar.active{left:0}
-.sidebar img{width:100%;height:120px;object-fit:cover}
-.sidebar a{padding:14px;text-decoration:none;color:#111;border-bottom:1px solid #eee;cursor:pointer}
-.back-btn{margin:15px;margin-top:auto;padding:10px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-weight:bold}
-
-/* MAIN */
-.main{padding:15px;padding-top:60px}
-
-/* CLOCK */
-.clock{text-align:center;font-size:20px;font-weight:bold;padding:10px;background:#f5f5f5;border-radius:10px;margin-bottom:12px}
-
-/* BANNER */
-.banner{display:flex;justify-content:center;margin-bottom:15px}
-.banner img{width:100%;max-width:500px;max-height:140px;object-fit:cover;border-radius:12px}
-
-/* CARD */
-.card{background:#fff;border:1px solid #eee;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-
-/* USER ROLE */
-.user-role{font-weight:bold;margin-bottom:6px;padding:6px 10px;border-radius:8px;display:inline-block;color:#fff}
-
-/* ROLE COLORS */
-.role-user{background:var(--gray);}
-.role-owner{background:var(--gold);}
-.role-developer{background:var(--blue);}
-
-/* SHOLAT */
-.sholat{background:#f9f9f9;border-radius:12px;padding:15px;margin-bottom:15px}
-.sholat h3{text-align:center;margin:0 0 10px}
-.sholat ul{list-style:none;padding:0;margin:0}
-.sholat li{padding:6px 0;border-bottom:1px solid #ddd}
-.sholat li:last-child{border:none}
-
-/* BUTTON */
-.btn-gold{width:100%;padding:10px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:8px}
-.footer-info{text-align:center;font-size:14px;color:#555;margin-top:10px}
-
-/* ALERT SYSTEM */
-.alert{display:none;font-size:14px;margin-top:8px;padding:10px;border-radius:10px;border:1px solid transparent;animation:none}
-.alert.error{background:#f8d7da;color:#721c24;border-color:#f5c6cb}
-.alert.success{background:#d4edda;color:#155724;border-color:#c3e6cb}
-.alert.shake{animation: shake 0.3s}
-@keyframes shake{0%{transform:translateX(0);}25%{transform:translateX(-6px);}50%{transform:translateX(6px);}75%{transform:translateX(-6px);}100%{transform:translateX(0);}}
-
-/* SUCCESS ANIMATION */
-.successMsg{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:bold;font-size:18px;opacity:0;transform:scale(0.5);transition: all 0.5s ease}
-.successMsg.active{opacity:1;transform:scale(1)}
-
-/* LOADING MENU BAR */
-#menuLoading{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);color:#fff;z-index:10000;flex-direction:column;justify-content:center;align-items:center;text-align:center}
-#menuLoading h2{margin-bottom:15px}
-#menuLoading p{margin-top:10px}
-#menuLoading .progress-container{width:300px;height:12px;border:2px solid #fff;border-radius:6px;overflow:hidden}
-#menuLoading .progress-bar{width:0%;height:100%;background:var(--gold)}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background: linear-gradient(135deg,#1a001a,#330033);
+  color:#f5e6b3;
+  padding-bottom:80px;
+}
+/* HERO */
+.hero{
+  text-align:center;
+  padding:90px 20px;
+}
+.hero h1{
+  color:#ffd700;
+  letter-spacing:2px;
+  text-shadow:0 0 8px #ffd700, 0 0 16px #ffcc00;
+}
+.hero h2{
+  font-size:38px;
+  color:#9d00ff;
+  text-shadow:0 0 6px #9d00ff,0 0 12px #cc66ff;
+}
+.hero p{
+  max-width:620px;
+  margin:15px auto;
+  color:#e6d8a8;
+  text-shadow:0 0 2px #ffd700;
+}
+/* BUTTONS */
+.buttons{
+  margin-top:30px;
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.btn{
+  padding:15px 32px;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:bold;
+  transition:0.3s;
+}
+.btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 12px #ffd700,0 0 24px #9d00ff;
+}
+.play{
+  background:linear-gradient(135deg,#00ff9c,#0fb);
+  color:#002b1f;
+}
+.store{
+  background:linear-gradient(135deg,#ffd700,#b8860b);
+  color:#000;
+}
+/* SECTION */
+.section{padding:60px 20px}
+.section h3{text-align:center;color:#ffd700;margin-bottom:30px;text-shadow:0 0 6px #ffd700}
+/* STATUS */
+.status-box{
+  max-width:620px;
+  margin:auto;
+  background:rgba(0,0,0,0.6);
+  border:2px solid #ffd700;
+  border-radius:18px;
+  padding:22px;
+}
+#server-status{text-align:center;font-size:20px;margin-bottom:18px;text-shadow:0 0 6px #9d00ff}
+.row{
+  display:flex;
+  justify-content:space-between;
+  padding:11px 0;
+  border-bottom:1px solid rgba(255,215,0,0.2);
+}
+.row:last-child{border-bottom:none}
+/* BOTTOM NAVBAR */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:rgba(26,0,26,0.95);
+  border-top:2px solid #ffd700;
+  display:flex;
+  justify-content:space-around;
+  padding:12px 0;
+  z-index:999;
+}
+.bottom-nav a{
+  color:#f5e6b3;
+  text-decoration:none;
+  font-weight:bold;
+  text-shadow:0 0 4px #9d00ff;
+}
+.bottom-nav a:hover{color:#ffd700;text-shadow:0 0 6px #ffd700}
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+  color:#bfae70;
+  text-shadow:0 0 2px #ffd700;
+}
 </style>
+
 </head>
 <body>
 
-<!-- LOADING AWAL -->
-<div id="loading">𝙇𝙊𝘼𝘿𝙄𝙉𝙂...</div>
+<section class="hero">
+  <h1>KLITIK CRAFT</h1>
+  <h2>Premium Minecraft Server Indonesia</h2>
+  <p>Survival server dengan komunitas aktif, performa stabil, dan rank eksklusif.</p>
 
-<!-- LOADING MENU -->
-<div id="menuLoading">
-  <h2>𝙇𝙊𝘼𝘿𝙄𝙉𝙂</h2>
-  <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
-  <p>-------------------------------------</p>
-</div>
-
-<!-- DASHBOARD CONTENT -->
-<div id="dashboardContent">
-
-<button class="menu-btn" onclick="toggleMenu()">☰</button>
-
-<div class="sidebar" id="sidebar">
-  <img src="foto.jpg">
-  <a onclick="loadMenu('ranks.html')">Ranks</a>
-  <a onclick="loadMenu('money.html')">Money</a>
-  <a onclick="loadMenu('skill.html')">Skill</a>
-  <a onclick="loadMenu('shard.html')">Shard</a>
-  <a onclick="loadMenu('invoice.html')">Invoice</a>
-  <a onclick="loadMenu('contact.html')">Hubungi Developer</a>
-  <button class="back-btn" onclick="toggleMenu()">⬅ Kembali</button>
-</div>
-
-<div class="main">
-
-  <div class="clock" id="clock">00:00:00</div>
-
-  <div class="banner">
-    <img src="banner.jpg" alt="Banner KLITIK CRAFT">
+  <div class="buttons">
+    <a href="play.html" class="btn play">Start Playing</a>
+    <a href="store.html" class="btn store">Explore Store</a>
   </div>
+</section>
 
-  <div class="card">
-    <div class="user-role" id="roleDisplay">Role: USER</div> <!-- Role -->
-    <h3>HALLO <span id="user">USER</span></h3>
-    <p>
-      Selamat datang di <b>KLITIK CRAFT</b>! Klik menu ☰ di kiri untuk order ranks atau fitur lainnya. Diskon kadang tersedia 🔥
-    </p>
-    <button class="btn-gold" onclick="logout()">Logout</button>
+<section class="section">
+  <h3>SERVER STATUS</h3>
+  <div class="status-box">
+    <div id="server-status">⏳ Checking server...</div>
+    <div class="row"><span>Player</span><span id="players">-</span></div>
+    <div class="row"><span>Ping</span><span id="ping">-</span></div>
+    <div class="row"><span>Version</span><span id="version">-</span></div>
+    <div class="row"><span>Address</span><span>play.klitikcraft.my.id:25541</span></div>
   </div>
+</section>
 
-  <div class="alert error" id="alertError">Something went wrong!</div>
-  <div class="successMsg" id="alertSuccess">✅ Success!</div>
+<footer>© 2026 Klitik Craft</footer>
 
-  <div class="sholat">
-    <h3>🕌 Jadwal Sholat</h3>
-    <ul id="jadwal"><li>Loading...</li></ul>
-  </div>
-
-  <div class="card">
-    <p class="footer-info">
-      Mau info lainnya? Gabung grup WhatsApp kami 📢<br>
-      🔥 Promo: Promosiin server kami = <b>DAPAT RANK GRATIS</b>!
-    </p>
-    <div class="rating">⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</div>
-  </div>
-
-</div>
+<div class="bottom-nav">
+  <a href="index.html">Home</a>
+  <a href="play.html">Play</a>
+  <a href="store.html">Store</a>
+  <a href="https://discord.gg/ISI_SENDIRI" target="_blank">Discord</a>
 </div>
 
 <script>
-// LOADING AWAL
-setTimeout(()=>{
-  document.getElementById("loading").style.display="none";
-  document.getElementById("dashboardContent").style.display="block";
-},8000);
-
-// SIDEBAR
-function toggleMenu(){document.getElementById("sidebar").classList.toggle("active");}
-
-// JAM
-const clockEl=document.getElementById("clock");
-function clock(){
-  const n=new Date();
-  clockEl.innerText=
-    String(n.getHours()).padStart(2,"0")+":"+
-    String(n.getMinutes()).padStart(2,"0")+":"+
-    String(n.getSeconds()).padStart(2,"0");
-}
-setInterval(clock,1000);clock();
-
-// SHOLAT
-fetch("https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=2")
-.then(r=>r.json())
-.then(d=>{
-  const t=d.data.timings;
-  document.getElementById("jadwal").innerHTML=`
-    <li>Subuh: ${t.Fajr}</li>
-    <li>Dzuhur: ${t.Dhuhr}</li>
-    <li>Ashar: ${t.Asr}</li>
-    <li>Maghrib: ${t.Maghrib}</li>
-    <li>Isya: ${t.Isha}</li>`;
-});
-
-// ===== USER.JSON SYSTEM =====
-let usersData = JSON.parse(localStorage.getItem("usersData") || "{}");
-
-// Login user
-const mc = localStorage.getItem("mcName") || "USER";
-let role = localStorage.getItem("role") || "user";
-
-// Update dashboard role
-function updateRoleDisplay(){
-  const roleDisplay = document.getElementById("roleDisplay");
-  roleDisplay.innerText = "Role: " + role.toUpperCase();
-  roleDisplay.classList.remove("role-user","role-owner","role-developer");
-  if(role === "user"){ roleDisplay.classList.add("role-user"); }
-  else if(role === "owner"){ roleDisplay.classList.add("role-owner"); }
-  else if(role === "developer"){ roleDisplay.classList.add("role-developer"); }
-}
-updateRoleDisplay();
-document.getElementById("user").innerText = mc;
-
-// Add or update user in JSON
-usersData[mc] = { role: role, lastLogin: new Date().toISOString() };
-localStorage.setItem("usersData", JSON.stringify(usersData));
-
-// Logout
-function logout(){localStorage.clear(); location.href="index.html";}
-
-// Menu loading
-function loadMenu(url){
-  const menuLoading=document.getElementById("menuLoading");
-  const progress=document.getElementById("progressBar");
-  menuLoading.style.display="flex";
-  let width=0;
-  const interval=setInterval(()=>{
-    width+=1;
-    progress.style.width=width+"%";
-    if(width>=100){
-      clearInterval(interval);
-      window.location.href=url;
+const ip="play.klitikcraft.my.id",port=25541;
+function loadStatus(){
+ fetch(`https://api.mcstatus.io/v2/status/java/${ip}:${port}`)
+  .then(r=>r.json()).then(d=>{
+    if(d.online){
+      server-status.innerText="🟢 SERVER ONLINE";
+      players.innerText=d.players.online+" / "+d.players.max;
+      ping.innerText=d.latency+" ms";
+      version.innerText=d.version.name_clean;
+    }else{
+      server-status.innerText="🔴 SERVER OFFLINE";
     }
-  },20);
+  }).catch(()=>{
+    server-status.innerText="🔴 SERVER OFFLINE";
+  });
 }
-
-// ALERT SYSTEM
-function showAlert(type,text){
-  const alertError=document.getElementById("alertError");
-  const alertSuccess=document.getElementById("alertSuccess");
-  if(type==="error"){
-    alertError.innerText=text;
-    alertError.style.display="block";
-    alertError.classList.add("shake");
-    setTimeout(()=>{alertError.style.display="none";},3000);
-  } else if(type==="success"){
-    alertSuccess.innerText=text;
-    alertSuccess.style.display="block";
-    alertSuccess.classList.add("active");
-    setTimeout(()=>{alertSuccess.style.display="none";},3000);
-  }
-}
-
-// ===== CONSOLE COMMAND SIMULATION =====
-// Contoh: di console browser ketik
-// .changesRole("owner","OwnerGuy")
-window.changesRole = function(newRole, username){
-  if(usersData[username]){
-    usersData[username].role = newRole;
-    localStorage.setItem("usersData", JSON.stringify(usersData));
-    console.log(`✅ Role ${username} berhasil diubah ke ${newRole}`);
-    // Jika user ini yang sedang login, update role di dashboard
-    if(mc === username){
-      role = newRole;
-      updateRoleDisplay();
-    }
-  } else {
-    console.log(`❌ User ${username} tidak ditemukan`);
-  }
-}
-
+loadStatus();
+setInterval(loadStatus,10000);
 </script>
 
 </body>
-    </html>
+  </html>
